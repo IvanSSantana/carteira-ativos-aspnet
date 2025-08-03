@@ -38,3 +38,17 @@ footer .container {
 header .container-fluid {
   margin-left: 8%;
 }
+
+.btn-cadastro {
+  margin-bottom: 17px;
+}
+
+.btn-redefinir-senha {
+  display: flex;
+  align-self: center;
+  margin-bottom: 17px;
+}
+
+.field-validation-error {
+  color: #e23838
+}

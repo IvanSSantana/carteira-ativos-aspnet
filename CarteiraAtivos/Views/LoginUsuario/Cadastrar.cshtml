@@ -1,0 +1,49 @@
+@using CarteiraAtivos.Models
+@model LoginUsuarioModel
+
+@{
+   Layout = "_LayoutLogin";
+   ViewData["Title"] = "Cadastro";
+}
+
+@if (TempData["Erro"] != null)
+  {
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="btn-close" aria-label="Close"></button>
+      @TempData["Erro"]
+    </div>
+  }
+
+<main>
+   <h2>@ViewData["Title"]</h2>
+   
+   <form asp-controller="LoginUsuario" asp-action="Cadastrar" method="post">
+
+      <div class="mb-3">
+         <label for="Nome">Nome</label>
+         <input type="text" class="form-control" asp-for="Nome">
+         @Html.ValidationMessageFor(x => x.Nome)
+      </div>
+
+      <div class="mb-3">
+         <label for="Login" class="form-label">Login</label>
+         <input type="text" class="form-control" asp-for="Login">
+         @Html.ValidationMessageFor(x => x.Login)
+      </div>
+
+      <div class="mb-3">
+         <label for="Email" class="form-label">E-mail</label>
+         <input type="email" class="form-control" asp-for="Email">
+         @Html.ValidationMessageFor(x => x.Email)
+      </div>
+
+      <div class="mb-3">
+         <label for="Senha" class="form-label">Senha</label>
+         <input type="password" class="form-control" asp-for="Senha">
+         @Html.ValidationMessageFor(x => x.Senha)
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+</form>
+
+</main>

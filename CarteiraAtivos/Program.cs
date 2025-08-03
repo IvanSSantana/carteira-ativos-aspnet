@@ -1,14 +1,23 @@
 using CarteiraAtivos.Data;
 using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
+using CarteiraAtivos.Repositories;
 
-Env.TraversePath().Load(); // Pega as variáveis de ambiente do arquivo .env
+Env.Load("./Environment/.env"); // Pega as variáveis de ambiente do arquivo .env
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseSqlServer(Env.GetString("DefaultConnection")));
+    options.UseSqlServer(Env.GetString("DB_CONNECTION")));
+
+builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+
+var mvcBuilder = builder.Services.AddControllersWithViews();
+
+if (builder.Environment.IsDevelopment())
+{
+    mvcBuilder.AddRazorRuntimeCompilation();
+}
 
 var app = builder.Build();
 

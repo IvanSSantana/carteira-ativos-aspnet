@@ -5,21 +5,31 @@
    ViewData["Title"] = "Login";
 }
 
+@if (TempData["Erro"] != null)
+  {
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="btn-close" aria-label="Close"></button>
+      @TempData["Erro"]
+    </div>
+  }
+
+  @if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn-close" aria-label="Close"></button>
+        @TempData["Sucesso"]
+    </div>
+}
+
 <main>
    <h2>@ViewData["Title"]</h2>
    
    <form asp-controller="LoginUsuario" asp-action="Login" method="post">
-
+         
    <div class="mb-3">
-      <label for="Nome" class="form-label">Nome</label>
-      <input type="text" class="form-control" asp-for="Nome">
-      @Html.ValidationMessageFor(x => x.Nome)
-   </div>
-
-   <div class="mb-3">
-      <label for="Email" class="form-label">E-mail</label>
-      <input type="email" class="form-control" asp-for="Email">
-      @Html.ValidationMessageFor(x => x.Email)
+      <label for="Login" class="form-label">Login</label>
+      <input type="text" class="form-control" asp-for="Login">
+      @Html.ValidationMessageFor(x => x.Login)
    </div>
 
    <div class="mb-3">
@@ -28,7 +38,12 @@
       @Html.ValidationMessageFor(x => x.Senha)
    </div>
 
-   <button type="submit" class="btn btn-primary">Logar</button>
+   <div class="d-flex justify-content-between">
+      <a class="btn-redefinir-senha text-primary" asp-controller="LoginUsuario" asp-action="RedefinirSenha">Esqueceu a senha?</a>
+      <a class="btn-cadastro btn btn-outline-primary" asp-controller="LoginUsuario" asp-action="Cadastrar">Cadastrar</a>
+   </div>
+
+   <button type="submit" class="btn btn-primary w-100">Logar</button>
 </form>
 
 </main>
