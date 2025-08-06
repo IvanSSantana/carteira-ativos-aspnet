@@ -10,5 +10,6 @@ namespace CarteiraAtivos.Data
         }
 
         public DbSet<LoginUsuarioModel> LoginUsuarios { get; set; }
+        public DbSet<AtivoModel> Ativos { get; set; }
     }
 }

@@ -8,8 +8,16 @@
 @if (TempData["Erro"] != null)
   {
     <div class="alert alert-danger" role="alert">
-      <button type="button" class="btn-close" aria-label="Close"></button>
       @TempData["Erro"]
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  }
+
+@if (TempData["Sucesso"] != null)
+  {
+    <div class="alert alert-success" role="alert">
+      @TempData["Sucesso"]
+      <button type="button" class="btn-close" aria-label="Close"></button>
     </div>
   }
 

@@ -25,11 +25,13 @@ namespace CarteiraAtivos.Repositories
             return _DbContext.Ativos.ToList();
       }
 
-      public async Task CadastrarAtivo(AtivoModel ativo)
+        public async Task<AtivoModel> CadastrarAtivo(AtivoModel ativo)
         {
             AtivoModel ativoCompleto = await _apiFinanceiraService.ObterDadosDoAtivos(ativo);
             _DbContext.Ativos.Add(ativoCompleto);
             await _DbContext.SaveChangesAsync();
+
+            return ativoCompleto;
         }
     }
 }

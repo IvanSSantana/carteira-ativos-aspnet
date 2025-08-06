@@ -8,7 +8,7 @@ namespace CarteiraAtivos.Repositories
 {
     public interface IAtivoRepositorio
     {
-        Task CadastrarAtivo(AtivoModel ativo);
+        Task<AtivoModel> CadastrarAtivo(AtivoModel ativo);
         List<AtivoModel> BuscarTodosAtivos();
     }
 }

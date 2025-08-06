@@ -37,7 +37,7 @@ public class LoginUsuarioController : Controller
     {
         if (ModelState.IsValid)
         {
-            LoginUsuarioModel usuarioDB = _usuarioRepositorio.BuscarPorLoginESenha(usuario.Login, usuario.Senha);
+            LoginUsuarioModel usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuario.Login);
 
             if (usuarioDB != null)
             {
@@ -68,7 +68,7 @@ public class LoginUsuarioController : Controller
     [HttpPost]
     public IActionResult Login(LoginUsuarioModel usuario)
     {
-        var usuarioDB = _usuarioRepositorio.BuscarPorLoginESenha(usuario.Login, usuario.Senha.GerarHash());
+        var usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuario.Login);
         if (ModelState != null)
         {
             if (usuarioDB == null || usuarioDB.Senha != usuario.Senha.GerarHash())

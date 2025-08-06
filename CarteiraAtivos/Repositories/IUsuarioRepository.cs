@@ -6,6 +6,6 @@ namespace CarteiraAtivos.Repositories
     {
         LoginUsuarioModel CadastrarUsuario(LoginUsuarioModel usuario);
         void RedefinirSenhaUsuario(); // Ainda não implementado
-        LoginUsuarioModel BuscarPorLoginESenha(string login, string senha);
+        LoginUsuarioModel BuscarPorLogin(string login);
     }
 }

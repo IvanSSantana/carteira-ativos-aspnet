@@ -13,6 +13,7 @@
          <th scope="col">Ticker</th>
          <th scope="col">Cotas</th>
          <th scope="col">Tipo</th>
+         <th scope="col">Setor</th>
          <th scope="col">Valor Total</th>
          <th scope="col"></th>
       </tr>
@@ -26,8 +27,9 @@
             <th scope="row">@ativo.Id</th>
             <td>@ativo.Ticker</td>
             <td>@ativo.Cotas</td>
-            <td>@ativo.Tipo</td>
-            <td>@ativo.ValorTotal</td>
+            <td>@(ativo.Tipo == "stock" || ativo.Tipo == "bdr" ? "Ação" : "FII")</td>
+            <td>@ativo.Setor</td>
+            <td>R$ @ativo.ValorTotal</td>
             <td>
               <div class="btn-group" role="group" aria-label="Basic example">
                 <a type="button" class="btn btn-primary" asp-route-id="@ativo.Id" asp-controller="Ativo" asp-action="Editar">Editar</a>
