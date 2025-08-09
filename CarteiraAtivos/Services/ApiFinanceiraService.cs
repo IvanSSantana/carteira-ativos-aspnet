@@ -15,20 +15,18 @@ namespace CarteiraAtivos.Services
         // funciona exatamente igual ao se conectar com um banco de dados
         private readonly HttpClient _httpClient;
 
-    public ApiFinanceiraService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-        Env.Load("./Environment/.env");
-    }
+        public ApiFinanceiraService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
 
-        public async Task<AtivoModel> ObterDadosDoAtivos(AtivoModel ativoModel)
+        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoModel ativoModel)
         {
             // Configuração do token para iniciar requisições
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
 
             // Busca dos dados
-                var response = await client.GetAsync($"https://brapi.dev/api/quote/list?search={ativoModel.Ticker}&limit=1&page=1");
+            var response = await _httpClient.GetAsync($"https://brapi.dev/api/quote/list?search={ativoModel.Ticker}&limit=1&page=1");
 
             // Caso não tenha sido sucesso, retorna uma exception HTTP
             response.EnsureSuccessStatusCode();
@@ -53,7 +51,8 @@ namespace CarteiraAtivos.Services
                 ValorTotal = dados!.Stocks[0].Close * ativoModel.Cotas,
                 Nome = dados.Stocks[0].Name,
                 Tipo = dados.Stocks[0].Type,
-                Setor = dados.Stocks[0].Sector
+                Setor = dados.Stocks[0].Sector,
+                LoginUsuarioId = ativoModel.LoginUsuarioId
             };
 
             return dadosAtivoModel!;

@@ -20,14 +20,14 @@ namespace CarteiraAtivos.Repositories
             _apiFinanceiraService = apiFinanceiraService; 
         }
 
-      public List<AtivoModel> BuscarTodosAtivos()
+      public List<AtivoModel> BuscarTodosAtivos(int usuarioId)
       {
-            return _DbContext.Ativos.ToList();
+            return _DbContext.Ativos.Where(u => u.LoginUsuarioId == usuarioId).ToList();
       }
 
         public async Task<AtivoModel> CadastrarAtivo(AtivoModel ativo)
         {
-            AtivoModel ativoCompleto = await _apiFinanceiraService.ObterDadosDoAtivos(ativo);
+            AtivoModel ativoCompleto = await _apiFinanceiraService.ObterDadosDoAtivo(ativo);
             _DbContext.Ativos.Add(ativoCompleto);
             await _DbContext.SaveChangesAsync();
 

@@ -9,6 +9,6 @@ namespace CarteiraAtivos.Repositories
     public interface IAtivoRepositorio
     {
         Task<AtivoModel> CadastrarAtivo(AtivoModel ativo);
-        List<AtivoModel> BuscarTodosAtivos();
+        List<AtivoModel> BuscarTodosAtivos(int usuarioId);
     }
 }

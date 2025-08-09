@@ -9,14 +9,23 @@ namespace CarteiraAtivos.Controllers;
 public class LoginUsuarioController : Controller
 {   // Injeções de dependência
     private readonly IUsuarioRepositorio _usuarioRepositorio;
+    private readonly ISessao _sessao;
 
-    public LoginUsuarioController(IUsuarioRepositorio usuarioRepositorio)
+    public LoginUsuarioController(IUsuarioRepositorio usuarioRepositorio,
+                ISessao sessao)
     {
         _usuarioRepositorio = usuarioRepositorio;
+        _sessao = sessao;
     }
 
     public IActionResult Index()
     {
+        // Verifica se o usuário já não está logado
+        if (_sessao.VerificarSessaoLogin() != null)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         return View();
     }
 
@@ -50,7 +59,7 @@ public class LoginUsuarioController : Controller
                 usuario.SenhaHash(); // Criptografa a senha
                 _usuarioRepositorio.CadastrarUsuario(usuario);
                 TempData["Sucesso"] = "Usuário cadastrado com sucesso!";
-                return RedirectToAction("Index", "Home");   
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -64,7 +73,7 @@ public class LoginUsuarioController : Controller
             return View(usuario);
         }
     }
-    
+
     [HttpPost]
     public IActionResult Login(LoginUsuarioModel usuario)
     {
@@ -76,11 +85,26 @@ public class LoginUsuarioController : Controller
                 TempData["Erro"] = "Usuário ou senha inválidos.";
                 return View("Index", usuario);
             }
-
+            
+            _sessao.CriarSessaoLogin(usuarioDB);
             return RedirectToAction("Index", "Home");
         }
 
         TempData["Erro"] = "Dados inválidos ou incompletos.";
         return View("Index", usuario);
+    }
+
+    public IActionResult SairLogin()
+    {
+        try
+        {
+            _sessao.RemoverSessaoLogin();
+            return RedirectToAction("Index", "LoginUsuario");
+        }
+        catch (Exception ex)
+        {
+            TempData["Erro"] = "Erro ao sair: " + ex.Message;
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

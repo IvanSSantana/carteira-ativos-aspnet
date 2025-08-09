@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using DotNetEnv;
 using CarteiraAtivos.Repositories;
 using CarteiraAtivos.Services;
+using CarteiraAtivos.Helpers;
 
 Env.Load("./Environment/.env"); // Pega as variáveis de ambiente do arquivo .env
 
@@ -11,11 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(Env.GetString("DB_CONNECTION")));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddHttpClient<IApiFinanceiraService, ApiFinanceiraService>();
 
+builder.Services.AddScoped<ISessao, Sessao>();
 builder.Services.AddScoped<AtivoRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddScoped<IAtivoRepositorio, AtivoRepositorio>();
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var mvcBuilder = builder.Services.AddControllersWithViews();
 
@@ -39,6 +49,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

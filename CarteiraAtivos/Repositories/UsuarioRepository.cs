@@ -15,12 +15,12 @@ namespace CarteiraAtivos.Repositories
       public LoginUsuarioModel BuscarPorLogin(string login)
       {
          return _DbContext.LoginUsuarios
-            .FirstOrDefault(u => u.Login == login);
+            .FirstOrDefault(u => u.Login == login)!;
       }
 
       public LoginUsuarioModel CadastrarUsuario(LoginUsuarioModel usuario)
       {
-         LoginUsuarioModel usuarioDB = _DbContext.LoginUsuarios.FirstOrDefault(u => u.Email == usuario.Email && u.Login == usuario.Login);
+         LoginUsuarioModel? usuarioDB = _DbContext.LoginUsuarios.FirstOrDefault(u => u.Email == usuario.Email && u.Login == usuario.Login);
 
          if (usuarioDB != null)
          {

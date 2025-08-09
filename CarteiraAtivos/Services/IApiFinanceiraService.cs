@@ -8,6 +8,6 @@ namespace CarteiraAtivos.Services
 {
     public interface IApiFinanceiraService
     {
-        Task<AtivoModel> ObterDadosDoAtivos(AtivoModel ativoModel);
+        Task<AtivoModel> ObterDadosDoAtivo(AtivoModel ativoModel);
     }
 }

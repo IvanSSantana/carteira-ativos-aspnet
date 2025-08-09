@@ -1,4 +1,5 @@
 @using CarteiraAtivos.Models
+@using CarteiraAtivos.Services
 @model AtivoModel
 
 @{
@@ -7,7 +8,7 @@
 
 @if (TempData["Erro"] != null)
   {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" data-bs-dismiss="alert" role="alert">
       @TempData["Erro"]
       <button type="button" class="btn-close" aria-label="Close"></button>
     </div>
@@ -15,7 +16,7 @@
 
 @if (TempData["Sucesso"] != null)
   {
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" data-bs-dismiss="alert" role="alert">
       @TempData["Sucesso"]
       <button type="button" class="btn-close" aria-label="Close"></button>
     </div>
@@ -38,7 +39,7 @@
          @Html.ValidationMessageFor(x => x.Cotas)
       </div>
 
-      <div id="valorTotal" class="form-text">O valor total é R$111,00</div>
+      <div id="valorTotal" class="form-text">O valor total é R$ 111,00</div>
 
       <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
    </form>

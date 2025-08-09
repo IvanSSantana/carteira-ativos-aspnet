@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 $(document).ready(function () {
-    ('.data-table').DataTable({
+    $('.data-table').DataTable({
     "autoWidth": false, 
     "responsive": true, 
     "ordering": true,
@@ -30,9 +30,5 @@ $(document).ready(function () {
             "sortDescending": ": Ordenar colunas de forma descendente"
         }
     }
-});
-
-$('.btn-close').click(function () {
-    $('.alert').hide('hide');
 });
 });

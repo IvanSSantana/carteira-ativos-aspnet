@@ -4,6 +4,7 @@ using CarteiraAtivos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarteiraAtivos.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250808020423_AtualizandoAtivoRelacionamento")]
+    partial class AtualizandoAtivoRelacionamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace CarteiraAtivos.Migrations
                     b.Property<int>("Cotas")
                         .HasColumnType("int");
 
-                    b.Property<int>("LoginUsuarioId")
+                    b.Property<int?>("LoginUsuarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -44,8 +47,8 @@ namespace CarteiraAtivos.Migrations
 
                     b.Property<string>("Ticker")
                         .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Tipo")
                         .HasColumnType("nvarchar(max)");
@@ -95,17 +98,10 @@ namespace CarteiraAtivos.Migrations
             modelBuilder.Entity("CarteiraAtivos.Models.AtivoModel", b =>
                 {
                     b.HasOne("CarteiraAtivos.Models.LoginUsuarioModel", "LoginUsuario")
-                        .WithMany("Ativos")
-                        .HasForeignKey("LoginUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("LoginUsuarioId");
 
                     b.Navigation("LoginUsuario");
-                });
-
-            modelBuilder.Entity("CarteiraAtivos.Models.LoginUsuarioModel", b =>
-                {
-                    b.Navigation("Ativos");
                 });
 #pragma warning restore 612, 618
         }

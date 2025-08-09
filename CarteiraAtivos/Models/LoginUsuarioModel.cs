@@ -12,19 +12,21 @@ namespace CarteiraAtivos.Models
 
         [Required(ErrorMessage = "O nome é obrigatório.")]
         [StringLength(100, ErrorMessage = "O nome deve ter entre 3 e 100 caracteres.", MinimumLength = 3)]
-        public string Nome { get; set; }
+        public required string Nome { get; set; }
 
         [Required(ErrorMessage = "O login é obrigatório.")]
         [StringLength(50, ErrorMessage = "O login deve ter entre 3 e 50 caracteres.", MinimumLength = 3)]
-        public string Login { get; set; }
+        public required string Login { get; set; }
 
         [Required(ErrorMessage = "O e-mail é obrigatório.")]
         [EmailAddress(ErrorMessage = "O campo deve conter um endereço de e-mail válido.")]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [Required(ErrorMessage = "A senha é obrigatória.")]
         [StringLength(100, ErrorMessage = "A senha deve ter entre 6 e 100 caracteres.", MinimumLength = 6)]
-        public string Senha { get; set; }
+        public required string Senha { get; set; }
+
+        public virtual List<AtivoModel>? Ativos { get; set; }
 
         public void SenhaHash()
         {
