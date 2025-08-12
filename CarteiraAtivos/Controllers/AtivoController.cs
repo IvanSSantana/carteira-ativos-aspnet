@@ -3,6 +3,8 @@ using CarteiraAtivos.Models;
 using CarteiraAtivos.Repositories;
 using CarteiraAtivos.Helpers;
 using CarteiraAtivos.Filters;
+using AutoMapper;
+using CarteiraAtivos.Dtos;
 
 namespace CarteiraAtivos.Controllers;
 
@@ -12,13 +14,15 @@ public class AtivoController : Controller
    private readonly IUsuarioRepositorio _usuarioRepositorio;
    private readonly IAtivoRepositorio _ativoRepositorio;
    private readonly ISessao _sessao;
+   private readonly IMapper _mapper;
 
    public AtivoController(IUsuarioRepositorio usuarioRepositorio,
-               IAtivoRepositorio ativoRepositorio, ISessao sessao)
+               IAtivoRepositorio ativoRepositorio, ISessao sessao, IMapper mapper)
    {
       _usuarioRepositorio = usuarioRepositorio;
       _ativoRepositorio = ativoRepositorio;
       _sessao = sessao;
+      _mapper = mapper;
    }
 
    public IActionResult Index()
@@ -35,22 +39,22 @@ public class AtivoController : Controller
    }
 
    [HttpPost]
-   public async Task<IActionResult> Criar(AtivoModel ativoModel)
+   public async Task<IActionResult> Criar(AtivoCreateDto ativoDto)
    {
       if (ModelState.IsValid && ModelState != null)
       {
          try
          {  
-            // Insere dinâmicamente o Id no Model pelo Login
             LoginUsuarioModel UsuarioLogado = _sessao.VerificarSessaoLogin();
 
             if (UsuarioLogado == null) { return RedirectToAction("Index", "LoginUsuario"); }
 
-            ativoModel.LoginUsuarioId = UsuarioLogado.Id;
+            // Insere dinâmicamente o Id no Model pelo Login
+            ativoDto.LoginUsuarioId = UsuarioLogado.Id;
 
-            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoModel);
+            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoDto);
 
-            if (ativoEnviado == null) { return View(ativoModel); }
+            if (ativoEnviado == null) { return View(ativoDto); }
 
             TempData["Sucesso"] = "Ativo cadastrado com sucesso!";
             return View();
@@ -58,11 +62,11 @@ public class AtivoController : Controller
          catch (System.Exception erro)
          {
             TempData["Erro"] = $"Houve um erro durante o cadastro. Detalhe do erro: {erro}";
-            return View(ativoModel);
+            return View(ativoDto);
          }
       }
 
       TempData["Erro"] = "Dados inválidos.";
-      return View(ativoModel);
+      return View(ativoDto);
    }
 }

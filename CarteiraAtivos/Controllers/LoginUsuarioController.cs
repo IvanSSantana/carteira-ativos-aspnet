@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using CarteiraAtivos.Models;
 using CarteiraAtivos.Repositories;
 using CarteiraAtivos.Helpers;
+using AutoMapper;
+using CarteiraAtivos.Dtos;
 
 namespace CarteiraAtivos.Controllers;
 
@@ -10,12 +12,14 @@ public class LoginUsuarioController : Controller
 {   // Injeções de dependência
     private readonly IUsuarioRepositorio _usuarioRepositorio;
     private readonly ISessao _sessao;
+    private readonly IMapper _mapper;
 
     public LoginUsuarioController(IUsuarioRepositorio usuarioRepositorio,
-                ISessao sessao)
+                ISessao sessao, IMapper mapper)
     {
         _usuarioRepositorio = usuarioRepositorio;
         _sessao = sessao;
+        _mapper = mapper;
     }
 
     public IActionResult Index()
@@ -42,48 +46,49 @@ public class LoginUsuarioController : Controller
     }
 
     [HttpPost]
-    public IActionResult Cadastrar(LoginUsuarioModel usuario)
+    public IActionResult Cadastrar(LoginUsuarioCreateDto usuarioDto)
     {
         if (ModelState.IsValid)
         {
-            LoginUsuarioModel usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuario.Login);
+            LoginUsuarioModel usuarioModel = _mapper.Map<LoginUsuarioModel>(usuarioDto);
+            LoginUsuarioModel usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuarioModel.Login);
 
             if (usuarioDB != null)
             {
                 TempData["Erro"] = "Já existe um usuário cadastrado com este login.";
-                return View(usuario);
+                return View(usuarioDto);
             }
 
             try
             {
-                usuario.SenhaHash(); // Criptografa a senha
-                _usuarioRepositorio.CadastrarUsuario(usuario);
+                usuarioModel.SenhaHash(); // Criptografa a senha
+                _usuarioRepositorio.CadastrarUsuario(usuarioModel);
                 TempData["Sucesso"] = "Usuário cadastrado com sucesso!";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 TempData["Erro"] = "Erro ao cadastrar usuário: " + ex.Message;
-                return View(usuario);
+                return View(usuarioDto);
             }
         }
         else
         {
             TempData["Erro"] = "Dados inválidos ou incompletos. Por favor, tente novamente.";
-            return View(usuario);
+            return View(usuarioDto);
         }
     }
-
+    
     [HttpPost]
-    public IActionResult Login(LoginUsuarioModel usuario)
+    public IActionResult Login(LoginUsuarioIndexDto usuarioDto)
     {
-        var usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuario.Login);
+        var usuarioDB = _usuarioRepositorio.BuscarPorLogin(usuarioDto.Login);
         if (ModelState != null)
         {
-            if (usuarioDB == null || usuarioDB.Senha != usuario.Senha.GerarHash())
+            if (usuarioDB == null || usuarioDB.Senha != usuarioDto.Senha.GerarHash())
             {
                 TempData["Erro"] = "Usuário ou senha inválidos.";
-                return View("Index", usuario);
+                return View("Index", usuarioDto);
             }
             
             _sessao.CriarSessaoLogin(usuarioDB);
@@ -91,7 +96,7 @@ public class LoginUsuarioController : Controller
         }
 
         TempData["Erro"] = "Dados inválidos ou incompletos.";
-        return View("Index", usuario);
+        return View("Index", usuarioDto);
     }
 
     public IActionResult SairLogin()

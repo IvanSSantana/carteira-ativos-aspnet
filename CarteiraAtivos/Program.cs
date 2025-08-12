@@ -4,6 +4,7 @@ using DotNetEnv;
 using CarteiraAtivos.Repositories;
 using CarteiraAtivos.Services;
 using CarteiraAtivos.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 
 Env.Load("./Environment/.env"); // Pega as variáveis de ambiente do arquivo .env
 
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(Env.GetString("DB_CONNECTION")));
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddHttpContextAccessor();
 

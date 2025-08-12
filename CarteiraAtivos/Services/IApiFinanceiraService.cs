@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CarteiraAtivos.Dtos;
 using CarteiraAtivos.Models;
 
 namespace CarteiraAtivos.Services
 {
     public interface IApiFinanceiraService
     {
-        Task<AtivoModel> ObterDadosDoAtivo(AtivoModel ativoModel);
+        Task<AtivoModel> ObterDadosDoAtivo(AtivoCreateDto ativoModel);
     }
 }

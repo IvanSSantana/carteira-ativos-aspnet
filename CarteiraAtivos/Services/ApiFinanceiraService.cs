@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using CarteiraAtivos.Models;
-using CarteiraAtivos.Models.ApiModels;
+using CarteiraAtivos.Dtos;
 using DotNetEnv;
 
 namespace CarteiraAtivos.Services
@@ -20,7 +16,7 @@ namespace CarteiraAtivos.Services
             _httpClient = httpClient;
         }
 
-        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoModel ativoModel)
+        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoCreateDto ativoModel)
         {
             // Configuração do token para iniciar requisições
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
@@ -35,10 +31,10 @@ namespace CarteiraAtivos.Services
             var json = await response.Content.ReadAsStringAsync();
 
             // Contém uma só array, de onde devem ser resgatados valores
-            // que serão convertidos no StockModel
-            RaizJsonModel dados = JsonSerializer.Deserialize<RaizJsonModel>(json)!;
+            // que serão convertidos no AtivoApiDto
+            RaizJsonApi dados = JsonSerializer.Deserialize<RaizJsonApi>(json)!;
 
-            if (dados == null || dados.Stocks.Count == 0)
+            if (dados == null || dados.stocks.Count == 0)
             {
                 throw new Exception("A API retornou uma resposta nula.");
             }
@@ -48,10 +44,10 @@ namespace CarteiraAtivos.Services
             {
                 Ticker = ativoModel.Ticker,
                 Cotas = ativoModel.Cotas,
-                ValorTotal = dados!.Stocks[0].Close * ativoModel.Cotas,
-                Nome = dados.Stocks[0].Name,
-                Tipo = dados.Stocks[0].Type,
-                Setor = dados.Stocks[0].Sector,
+                ValorTotal = dados!.stocks[0].Cotacao * ativoModel.Cotas,
+                Nome = dados.stocks[0].Nome,
+                Tipo = dados.stocks[0].Tipo,
+                Setor = dados.stocks[0].Setor,
                 LoginUsuarioId = ativoModel.LoginUsuarioId
             };
 

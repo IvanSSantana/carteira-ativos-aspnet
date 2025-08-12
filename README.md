@@ -3,3 +3,7 @@ Um projeto que simula uma carteira de ativos. Feito para demonstrar todos meus c
 
 ## Passo a passo para rodar a aplicação em sua máquina local:
 1. No arquivo ".env" você deve inserir o valor das váriaveis de ambiente.
+
+
+## Notas:
+ - A integração de API, o uso de DTOs e .env foram conhecimentos adquiridos de fontes externas. Então caso não estejam devidamente aplicados, estou aberto a sugestões de melhoria e coreções.

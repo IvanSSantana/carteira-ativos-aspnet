@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CarteiraAtivos.Models;
 using CarteiraAtivos.Data;
 using CarteiraAtivos.Services;
+using CarteiraAtivos.Dtos;
 
 namespace CarteiraAtivos.Repositories
 {
@@ -25,13 +22,13 @@ namespace CarteiraAtivos.Repositories
             return _DbContext.Ativos.Where(u => u.LoginUsuarioId == usuarioId).ToList();
       }
 
-        public async Task<AtivoModel> CadastrarAtivo(AtivoModel ativo)
+        public async Task<AtivoModel> CadastrarAtivo(AtivoCreateDto ativoDto)
         {
-            AtivoModel ativoCompleto = await _apiFinanceiraService.ObterDadosDoAtivo(ativo);
-            _DbContext.Ativos.Add(ativoCompleto);
+            AtivoModel ativoModel = await _apiFinanceiraService.ObterDadosDoAtivo(ativoDto);
+            _DbContext.Ativos.Add(ativoModel);
             await _DbContext.SaveChangesAsync();
 
-            return ativoCompleto;
+            return ativoModel;
         }
     }
 }
