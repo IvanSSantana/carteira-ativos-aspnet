@@ -10,5 +10,7 @@ public class MappingProfile : Profile
          .ReverseMap();
       CreateMap<LoginUsuarioIndexDto, LoginUsuarioModel>();
       CreateMap<LoginUsuarioCreateDto, LoginUsuarioModel>();
+      CreateMap<AtivoCreateDto, AtivoModel>()
+         .ReverseMap();
    }
 }

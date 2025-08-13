@@ -2,7 +2,7 @@
 @model AtivoCreateDto
 
 @{
-   ViewData["Title"] = "Cadastro de Ativo";
+   ViewData["Title"] = "Edição de Ativo";
 }
 
 @if (TempData["Erro"] != null)
@@ -24,7 +24,8 @@
 <main>
    <h2>@ViewData["Title"]</h2>
    
-   <form asp-controller="Ativo" asp-action="Criar" method="post">
+   <form asp-controller="Ativo" asp-action="Editar" method="post">
+      <input type="hidden" asp-for="Id" />
 
       <div class="mb-3">
          <label for="Ticker">Ticker</label>
@@ -38,10 +39,9 @@
          @Html.ValidationMessageFor(x => x.Cotas)
       </div>
 
-      // Aqui virá um componente com a lógica da cotação 
       <div id="valorTotal" class="form-text">O valor total é R$ 111,00</div>
 
-      <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+      <button type="submit" class="btn btn-primary w-100">Editar ativo</button>
    </form>
 
 </main>

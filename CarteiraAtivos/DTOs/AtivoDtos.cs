@@ -34,7 +34,6 @@ namespace CarteiraAtivos.Dtos
         [Range(1, 100, ErrorMessage = "O valor de cotas deve ser entre 1 e 100.")]
         public required int Cotas { get; set; } // Quantas cotas você tem da ação.
 
-        public int LoginUsuarioId { get; set; }
-
+        public int Id { get; set; }
     }
 }

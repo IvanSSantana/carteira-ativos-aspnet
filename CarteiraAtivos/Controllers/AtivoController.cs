@@ -44,13 +44,18 @@ public class AtivoController : Controller
       if (ModelState.IsValid && ModelState != null)
       {
          try
-         {  
-            LoginUsuarioModel UsuarioLogado = _sessao.VerificarSessaoLogin();
+         {
+            LoginUsuarioModel usuarioLogado = _sessao.VerificarSessaoLogin()!;
 
-            if (UsuarioLogado == null) { return RedirectToAction("Index", "LoginUsuario"); }
+            if (usuarioLogado == null) { return RedirectToAction("Index", "LoginUsuario"); }
 
-            // Insere dinâmicamente o Id no Model pelo Login
-            ativoDto.LoginUsuarioId = UsuarioLogado.Id;
+            AtivoModel ativoDB = _ativoRepositorio.BuscarPorTickerEUsuarioId(ativoDto.Ticker, usuarioLogado.Id);
+
+            if (ativoDB != null)
+            {
+               TempData["Erro"] = "Esse ativo já está registrado.";
+               return View(ativoDto);
+            }
 
             AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoDto);
 
@@ -68,5 +73,46 @@ public class AtivoController : Controller
 
       TempData["Erro"] = "Dados inválidos.";
       return View(ativoDto);
+   }
+
+   [HttpGet]
+   public IActionResult Editar(int ativoId)
+   {
+      int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
+      AtivoModel ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoId, usuarioId);
+      AtivoCreateDto ativoDtoModel = _mapper.Map<AtivoCreateDto>(ativoDb);
+
+      return View(ativoDtoModel);
+   }
+
+   [HttpPost]
+   public async Task<IActionResult> Editar(AtivoCreateDto ativoDto)
+   {
+      try
+      {
+         int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
+         var ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoDto.Id, usuarioId);
+
+         if (!ModelState.IsValid)
+         {
+            TempData["Erro"] = "Erro ao buscar ativo no banco. Por favor, tente novamente.";
+            return View("Index", ativoDto);
+         }
+         
+         if (ativoDb == null || ativoDb.LoginUsuarioId != usuarioId)
+         {
+            TempData["Erro"] = "Edição inválida ou acesso negado.";
+            return View("Index", ativoDto);
+         }
+
+         await _ativoRepositorio.EditarAtivo(ativoDto);
+         TempData["Sucesso"] = "Ativo editado com sucesso!";
+         return RedirectToAction("Index");
+      }
+      catch (System.Exception erro)
+      {  
+         TempData["Erro"] = $"Houve um erro durante a edição. Detalhes: {erro}";
+         return View(ativoDto);
+      }
    }
 }

@@ -2,6 +2,7 @@ using System.Text.Json;
 using CarteiraAtivos.Models;
 using CarteiraAtivos.Dtos;
 using DotNetEnv;
+using CarteiraAtivos.Helpers;
 
 namespace CarteiraAtivos.Services
 {   
@@ -10,19 +11,21 @@ namespace CarteiraAtivos.Services
         //  Injeção De Dependência:
         // funciona exatamente igual ao se conectar com um banco de dados
         private readonly HttpClient _httpClient;
+        private readonly ISessao _sessao;
 
-        public ApiFinanceiraService(HttpClient httpClient)
+        public ApiFinanceiraService(HttpClient httpClient, ISessao sessao)
         {
             _httpClient = httpClient;
+            _sessao = sessao;
         }
 
-        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoCreateDto ativoModel)
+        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoCreateDto ativoDto)
         {
             // Configuração do token para iniciar requisições
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
 
             // Busca dos dados
-            var response = await _httpClient.GetAsync($"https://brapi.dev/api/quote/list?search={ativoModel.Ticker}&limit=1&page=1");
+            var response = await _httpClient.GetAsync($"https://brapi.dev/api/quote/list?search={ativoDto.Ticker}&limit=1&page=1");
 
             // Caso não tenha sido sucesso, retorna uma exception HTTP
             response.EnsureSuccessStatusCode();
@@ -42,13 +45,13 @@ namespace CarteiraAtivos.Services
             // Cria o model completo para retorno
             AtivoModel dadosAtivoModel = new()
             {
-                Ticker = ativoModel.Ticker,
-                Cotas = ativoModel.Cotas,
-                ValorTotal = dados!.stocks[0].Cotacao * ativoModel.Cotas,
+                Ticker = ativoDto.Ticker,
+                Cotas = ativoDto.Cotas,
+                ValorTotal = dados!.stocks[0].Cotacao * ativoDto.Cotas,
                 Nome = dados.stocks[0].Nome,
                 Tipo = dados.stocks[0].Tipo,
                 Setor = dados.stocks[0].Setor,
-                LoginUsuarioId = ativoModel.LoginUsuarioId
+                LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id
             };
 
             return dadosAtivoModel!;
