@@ -6,4 +6,4 @@ Um projeto que simula uma carteira de ativos. Feito para demonstrar todos meus c
 
 
 ## Notas:
- - A integração de API, o uso de DTOs e .env foram conhecimentos adquiridos de fontes externas. Então caso não estejam devidamente aplicados, estou aberto a sugestões de melhoria e coreções.
+ - A integração de API, o uso de DTOs e .env foram conhecimentos adquiridos de fontes externas. Então caso não estejam devidamente aplicados, estou aberto a sugestões de melhoria e correções.
