@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 $(document).ready(function () {
     $('.data-table').DataTable({
-    "autoWidth": false, 
+    "autoWidth": true, 
     "responsive": true, 
     "ordering": true,
     "paging": true,
@@ -31,4 +31,23 @@ $(document).ready(function () {
         }
     }
 });
+});
+
+$(document).ready(function () {
+    $('.btn-confirmar-deletar').click(function (page) {
+        page.preventDefault(); // Impede navegação, permitindo a PartialView
+
+        var url = $(this).attr("href"); // Pega a URL já montada pelo asp-route
+
+        $.ajax({
+            type: 'GET',
+            url: url, // Usa direto a URL da variável
+            success: function (result) {
+                $('#modalDeletarAtivo .modal-content').html(result);
+
+                var modal = new bootstrap.Modal($('#modalDeletarAtivo'));
+                modal.show();
+            }
+        });
+    });
 });

@@ -98,7 +98,7 @@ public class AtivoController : Controller
             TempData["Erro"] = "Erro ao buscar ativo no banco. Por favor, tente novamente.";
             return View("Index", ativoDto);
          }
-         
+
          if (ativoDb == null || ativoDb.LoginUsuarioId != usuarioId)
          {
             TempData["Erro"] = "Edição inválida ou acesso negado.";
@@ -110,9 +110,49 @@ public class AtivoController : Controller
          return RedirectToAction("Index");
       }
       catch (System.Exception erro)
-      {  
+      {
          TempData["Erro"] = $"Houve um erro durante a edição. Detalhes: {erro}";
          return View(ativoDto);
       }
+   }
+
+   [HttpGet]
+   public IActionResult ApagarConfirmacao(int ativoId)
+   {
+      int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
+      AtivoModel ativoModel = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoId, usuarioId);
+
+      if (ativoModel == null)
+      {
+         TempData["Erro"] = "Falha na busca do ativo.";
+         return RedirectToAction("Index");
+      }
+
+      return PartialView("_ApagarConfirmacao", ativoModel);
+   }
+
+   [HttpPost]
+   public IActionResult Apagar(int ativoId)
+   {
+      try
+      {
+         int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
+         AtivoModel ativoDB = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoId, usuarioId);
+
+         if (ativoDB == null)
+         {
+            TempData["Erro"] = "Falha na busca do ativo.";
+            return RedirectToAction("Index");
+         }
+
+         _ativoRepositorio.DeletarAtivo(ativoId);
+         TempData["Sucesso"] = "Ativo deletado com sucesso!";
+         return RedirectToAction("Index");
+      }
+      catch (System.Exception erro)
+      {
+         TempData["Erro"] = $"Ocorreu um problema durante a deleção do ativo. Detalhes: {erro}";
+         return RedirectToAction("Index");
+      }  
    }
 }

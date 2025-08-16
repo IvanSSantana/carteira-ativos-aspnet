@@ -71,5 +71,18 @@ namespace CarteiraAtivos.Repositories
             return _DbContext.Ativos.FirstOrDefault(x => x.Ticker == ticker && x.LoginUsuarioId == usuarioId);
         }
 
+        public bool DeletarAtivo(int ativoId)
+        {
+            AtivoModel ativoDB = BuscarPorIdEUsuarioId(ativoId, _sessao.VerificarSessaoLogin()!.Id);
+
+            if (ativoDB == null)
+            {
+                throw new System.Exception("Houve um erro na busca do ativo.");
+            }
+
+            _DbContext.Ativos.Remove(ativoDB);
+            _DbContext.SaveChanges();
+            return true;
+      }
    }
 }
