@@ -13,6 +13,7 @@ namespace CarteiraAtivos.Data
         // Criação das entidades no banco de dados
         public DbSet<LoginUsuarioModel> LoginUsuarios { get; set; }
         public DbSet<AtivoModel> Ativos { get; set; }   
+        public DbSet<RedefinicaoSenhaModel> RedefinicoesSenha { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

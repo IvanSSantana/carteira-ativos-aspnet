@@ -11,13 +11,13 @@ namespace CarteiraAtivos.Controllers;
 [PaginaUsuarioLogado]
 public class AtivoController : Controller
 {   // Injeções de dependência
-   private readonly IUsuarioRepositorio _usuarioRepositorio;
-   private readonly IAtivoRepositorio _ativoRepositorio;
+   private readonly IUsuarioRepository _usuarioRepositorio;
+   private readonly IAtivoRepository _ativoRepositorio;
    private readonly ISessao _sessao;
    private readonly IMapper _mapper;
 
-   public AtivoController(IUsuarioRepositorio usuarioRepositorio,
-               IAtivoRepositorio ativoRepositorio, ISessao sessao, IMapper mapper)
+   public AtivoController(IUsuarioRepository usuarioRepositorio,
+               IAtivoRepository ativoRepositorio, ISessao sessao, IMapper mapper)
    {
       _usuarioRepositorio = usuarioRepositorio;
       _ativoRepositorio = ativoRepositorio;

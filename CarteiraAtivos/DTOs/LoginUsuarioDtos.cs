@@ -45,3 +45,30 @@ public class LoginUsuarioCreateDto // Utilizada para cadastro
       Senha = Senha.GerarHash();
    } 
 }
+
+public class LoginUsuarioUpdateDto // Utilizado redefinição de senha
+{
+    public required string Codigo { get; set; }
+    
+   [Required(ErrorMessage = "A senha é obrigatória.")]
+   [StringLength(100, ErrorMessage = "A senha deve ter, no mínimo, 6 caracteres.", MinimumLength = 6)]
+   [DataType(DataType.Password)]
+   public string? Senha { get; set; }
+
+   [Required(ErrorMessage = "A confirmação da senha é obrigatória.")]
+   [Compare("Senha", ErrorMessage = "As senhas não conferem.")]
+   [DataType(DataType.Password)]
+   public string? ConfirmarSenha { get; set; }
+
+   public void SenhaHash()
+   {
+      Senha = Senha!.GerarHash();
+   }
+}
+
+public class LoginUsuarioEmailDto // Utilizado redefinição de senha
+{
+   [Required(ErrorMessage = "O e-mail é obrigatório.")]
+   [EmailAddress(ErrorMessage = "O campo deve conter um endereço de e-mail válido.")]
+   public required string Email { get; set; }
+}

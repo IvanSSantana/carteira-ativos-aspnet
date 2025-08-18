@@ -3,7 +3,7 @@ using CarteiraAtivos.Models;
 
 namespace CarteiraAtivos.Repositories
 {
-    public interface IAtivoRepositorio
+    public interface IAtivoRepository
     {
         // CRUD
         Task<AtivoModel> CadastrarAtivo(AtivoCreateDto ativo);

@@ -6,13 +6,13 @@ using CarteiraAtivos.Helpers;
 
 namespace CarteiraAtivos.Repositories
 {
-    public class AtivoRepositorio : IAtivoRepositorio
+    public class AtivoRepository : IAtivoRepository
     {
         private readonly DatabaseContext _DbContext;
         private readonly IApiFinanceiraService _apiFinanceiraService;
         private readonly ISessao _sessao;
 
-        public AtivoRepositorio(DatabaseContext bancoContext,
+        public AtivoRepository(DatabaseContext bancoContext,
                     IApiFinanceiraService apiFinanceiraService, ISessao sessao)
         {
             _DbContext = bancoContext;

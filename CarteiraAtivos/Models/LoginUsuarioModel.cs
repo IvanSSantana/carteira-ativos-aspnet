@@ -24,6 +24,7 @@ namespace CarteiraAtivos.Models
 
         [Required(ErrorMessage = "A senha é obrigatória.")]
         [StringLength(100, ErrorMessage = "A senha deve ter entre 6 e 100 caracteres.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
         public required string Senha { get; set; }
 
         public virtual List<AtivoModel>? Ativos { get; set; }

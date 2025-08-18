@@ -1,0 +1,39 @@
+@using CarteiraAtivos.Dtos
+@model LoginUsuarioEmailDto
+
+@{
+   Layout = "_LayoutLogin";
+   ViewData["Title"] = "Redefinir Senha";
+}
+
+@if (TempData["Erro"] != null)
+  {
+    <div class="alert alert-danger alert-dismissible fade show" data-bs-dismiss="alert" role="alert">
+      @TempData["Erro"]
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  }
+
+@if (TempData["Sucesso"] != null)
+  {
+    <div class="alert alert-success alert-dismissible fade show" data-bs-dismiss="alert" role="alert">
+      @TempData["Sucesso"]
+      <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  }
+
+<main>
+   <h2>@ViewData["Title"]</h2>
+   
+   <form asp-controller="LoginUsuario" asp-action="EnviarCodigoRedefinirSenha" method="post">
+         
+   <div class="mb-3">
+      <label for="Email" class="form-label">Email</label>
+      <input type="text" class="form-control" asp-for="Email">
+      @Html.ValidationMessageFor(x => x.Email)
+   </div>
+
+   <button type="submit" class="btn btn-primary w-100">Enviar</button>
+</form>
+
+</main>

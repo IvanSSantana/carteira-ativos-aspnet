@@ -1,15 +1,23 @@
 using CarteiraAtivos.Data;
+using CarteiraAtivos.Dtos;
+using CarteiraAtivos.Helpers;
 using CarteiraAtivos.Models;
 
 namespace CarteiraAtivos.Repositories
 {
-   public class UsuarioRepositorio : IUsuarioRepositorio
+   public class UsuarioRepository : IUsuarioRepository
    {
       private readonly DatabaseContext _DbContext;
 
-      public UsuarioRepositorio(DatabaseContext context)
+      public UsuarioRepository(DatabaseContext context)
       {
          _DbContext = context;
+      }
+
+      public LoginUsuarioModel BuscarPorEmail(string email)
+      {
+         return _DbContext.LoginUsuarios
+            .FirstOrDefault(u => u.Email == email)!;
       }
 
       public LoginUsuarioModel BuscarPorLogin(string login)
@@ -20,11 +28,11 @@ namespace CarteiraAtivos.Repositories
 
       public LoginUsuarioModel CadastrarUsuario(LoginUsuarioModel usuario)
       {
-         LoginUsuarioModel? usuarioDB = _DbContext.LoginUsuarios.FirstOrDefault(u => u.Email == usuario.Email && u.Login == usuario.Login);
+         LoginUsuarioModel? usuarioDB = _DbContext.LoginUsuarios.FirstOrDefault(u => u.Email == usuario.Email);
 
          if (usuarioDB != null)
          {
-            throw new InvalidOperationException("Esse usuário já está cadastrado no sistema.");
+            throw new InvalidOperationException("Esse e-mail já está cadastrado no sistema.");
          }
 
          _DbContext.LoginUsuarios.Add(usuario);
@@ -33,9 +41,20 @@ namespace CarteiraAtivos.Repositories
          return usuario;
       }
 
-      public void RedefinirSenhaUsuario()
+      public bool RedefinirSenhaUsuario(LoginUsuarioModel usuario)
       {
-         // Implementação da redefinição de senha
+         LoginUsuarioModel? usuarioDB = _DbContext.LoginUsuarios.FirstOrDefault(u => u.Email == usuario.Email);
+
+         if (usuarioDB == null)
+         {
+            throw new InvalidOperationException("Conta não encontrada.");
+         }
+
+         usuarioDB.Senha = usuario.Senha!;
+
+         _DbContext.Update(usuarioDB);
+         _DbContext.SaveChanges();
+         return true;
       }
    }
 }

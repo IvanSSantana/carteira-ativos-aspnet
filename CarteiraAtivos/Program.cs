@@ -13,16 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(Env.GetString("DB_CONNECTION")));
 
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly); // Inserindo AutoMapper
 
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHttpClient<IApiFinanceiraService, ApiFinanceiraService>();
 
 builder.Services.AddScoped<ISessao, Sessao>();
-builder.Services.AddScoped<AtivoRepositorio>();
-builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-builder.Services.AddScoped<IAtivoRepositorio, AtivoRepositorio>();
+builder.Services.AddScoped<IEmail, Email>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAtivoRepository, AtivoRepository>();
+builder.Services.AddScoped<IRedefinicaoSenhaRepository, RedefinicaoSenhaRepository>();
+
 
 builder.Services.AddSession(options =>
 {
