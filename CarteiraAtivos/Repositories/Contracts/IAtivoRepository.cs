@@ -6,8 +6,8 @@ namespace CarteiraAtivos.Repositories
     public interface IAtivoRepository
     {
         // CRUD
-        Task<AtivoModel> CadastrarAtivo(AtivoCreateDto ativo);
-        Task<AtivoModel> EditarAtivo(AtivoCreateDto ativo);
+        Task<AtivoModel> CadastrarAtivo(AtivoModel ativo);
+        Task<AtivoModel> EditarAtivo(AtivoModel ativo);
         bool DeletarAtivo(int ativoId);
 
         // Queries somente de busca

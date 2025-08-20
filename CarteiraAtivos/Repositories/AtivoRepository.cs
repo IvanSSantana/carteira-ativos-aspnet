@@ -9,14 +9,12 @@ namespace CarteiraAtivos.Repositories
     public class AtivoRepository : IAtivoRepository
     {
         private readonly DatabaseContext _DbContext;
-        private readonly IApiFinanceiraService _apiFinanceiraService;
         private readonly ISessao _sessao;
 
         public AtivoRepository(DatabaseContext bancoContext,
-                    IApiFinanceiraService apiFinanceiraService, ISessao sessao)
+                    ISessao sessao)
         {
             _DbContext = bancoContext;
-            _apiFinanceiraService = apiFinanceiraService;
             _sessao = sessao;
         }
 
@@ -35,17 +33,15 @@ namespace CarteiraAtivos.Repositories
             return _DbContext.Ativos.FirstOrDefault(x => x.Id == ativoId && x.LoginUsuarioId == usuarioId);
         }
 
-        public async Task<AtivoModel> CadastrarAtivo(AtivoCreateDto ativoDto)
+        public async Task<AtivoModel> CadastrarAtivo(AtivoModel ativo)
         {
-            AtivoModel ativoModel = await _apiFinanceiraService.ObterDadosDoAtivo(ativoDto);
-            ativoModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-            _DbContext.Ativos.Add(ativoModel);
+            _DbContext.Ativos.Add(ativo);
             await _DbContext.SaveChangesAsync();
 
-            return ativoModel;
+            return ativo;
         }
 
-      public async Task<AtivoModel> EditarAtivo(AtivoCreateDto ativo)
+        public async Task<AtivoModel> EditarAtivo(AtivoModel ativo)
         {
             AtivoModel ativoDB = BuscarPorIdEUsuarioId(ativo.Id, _sessao.VerificarSessaoLogin()!.Id);
 
@@ -54,11 +50,9 @@ namespace CarteiraAtivos.Repositories
                 throw new System.Exception("Houve um erro na busca do ativo.");
             }
 
-            AtivoModel ativoAtualizado = await _apiFinanceiraService.ObterDadosDoAtivo(ativo);
-
             ativoDB.Ticker = ativo.Ticker;
             ativoDB.Cotas = ativo.Cotas;
-            ativoDB.ValorTotal = ativoAtualizado.ValorTotal;
+            ativoDB.ValorTotal = ativo.ValorTotal;
 
             _DbContext.Ativos.Update(ativoDB);
             _DbContext.SaveChanges();
@@ -83,6 +77,6 @@ namespace CarteiraAtivos.Repositories
             _DbContext.Ativos.Remove(ativoDB);
             _DbContext.SaveChanges();
             return true;
-      }
+        }
    }
 }

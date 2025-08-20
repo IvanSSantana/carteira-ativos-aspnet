@@ -61,7 +61,10 @@ public class AtivoController : Controller
                return View(ativoDto);
             }
 
-            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoDto);
+            AtivoModel ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+            ativoApi.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
+
+            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoApi);
 
             if (ativoEnviado == null) { return View(ativoDto); }
 
@@ -95,7 +98,7 @@ public class AtivoController : Controller
       try
       {
          int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
-         var ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoDto.Id, usuarioId);
+         AtivoModel ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoDto.Id, usuarioId);
 
          if (!ModelState.IsValid)
          {
@@ -108,8 +111,10 @@ public class AtivoController : Controller
             TempData["Erro"] = "Edição inválida ou acesso negado.";
             return View("Index", ativoDto);
          }
+         
+         AtivoModel ativoAtualizado = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
-         await _ativoRepositorio.EditarAtivo(ativoDto);
+         await _ativoRepositorio.EditarAtivo(ativoAtualizado);
          TempData["Sucesso"] = "Ativo editado com sucesso!";
          return RedirectToAction("Index");
       }
