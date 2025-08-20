@@ -56,5 +56,28 @@ namespace CarteiraAtivos.Services
 
             return dadosAtivoModel!;
         }
-    }
+
+        public async Task<List<PrecoHistoricoDto>> ObterHistoricoDePrecos(string ticker, string intervalo, string range)
+        {
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
+
+            // Busca dos dados
+            var response = await _httpClient.GetAsync($"https://brapi.dev/api/quote/{ticker}?range={range}&interval={intervalo}");
+
+            response.EnsureSuccessStatusCode();
+
+            // Transforma dados em Json
+            var json = await response.Content.ReadAsStringAsync();
+
+            // Deserializa o JSON para a lista de PrecoHistoricoDto
+            var dados = JsonSerializer.Deserialize<RaizHistoricoJson>(json);
+
+            if (dados == null || dados.results.Count == 0)
+            {
+                throw new Exception("A API retornou uma resposta nula.");
+            }
+            
+            return dados.results[0].HistoricoPreco!;
+        }
+   }
 }   

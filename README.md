@@ -1,5 +1,5 @@
-# trilha-desenvolvedor-backend
-Um projeto que simula uma carteira de ativos. Feito para demonstrar todos meus conhecimentos adquiridos durante a trilha de back-end do FDevs 2K25.
+# Carteira de Ativos Virtual
+Um projeto que simula uma carteira de ativos feito com ASP.NET Core. Feito para demonstrar todos meus conhecimentos adquiridos durante a trilha de back-end do FDevs 2K25.
 
 ## Passo a passo para rodar a aplicação em sua máquina local:
 0. Crie uma chave de API na [Brapi](https://brapi.dev/).

@@ -1,0 +1,49 @@
+@using CarteiraAtivos.Dtos
+@model List<PrecoHistoricoDto>
+
+<h2>Histórico de preços</h2>
+
+<div>
+    <canvas id="graficoPrecos"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+   // Serializa em Json novamente para integração correta com JavaScript
+   @* @Html.Raw: não permite virar HTML, mas permanece como JSON *@
+    const dados = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
+
+   // Mapeia os dados para o gráfico: mapeamento funciona como um for, mas na programação funcional
+
+   // Colunas => convertendo TimeStamp para Date
+    const labels = dados.map(d => new Date(d.date * 1000).toLocaleDateString("pt-BR"));
+    // Valores
+    const valores = dados.map(d => (d.close + d.open) / 2); // => Preço Médio
+
+    const ctx = document.getElementById('graficoPrecos').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Preço (R$)',
+                data: valores,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.2 // curva suave
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>

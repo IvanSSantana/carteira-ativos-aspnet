@@ -5,6 +5,7 @@ using CarteiraAtivos.Helpers;
 using CarteiraAtivos.Filters;
 using AutoMapper;
 using CarteiraAtivos.Dtos;
+using CarteiraAtivos.Services;
 
 namespace CarteiraAtivos.Controllers;
 
@@ -15,14 +16,16 @@ public class AtivoController : Controller
    private readonly IAtivoRepository _ativoRepositorio;
    private readonly ISessao _sessao;
    private readonly IMapper _mapper;
+   private readonly IApiFinanceiraService _serviceApi;
 
    public AtivoController(IUsuarioRepository usuarioRepositorio,
-               IAtivoRepository ativoRepositorio, ISessao sessao, IMapper mapper)
+               IAtivoRepository ativoRepositorio, ISessao sessao, IMapper mapper, IApiFinanceiraService serviceApi)
    {
       _usuarioRepositorio = usuarioRepositorio;
       _ativoRepositorio = ativoRepositorio;
       _sessao = sessao;
       _mapper = mapper;
+      _serviceApi = serviceApi;
    }
 
    public IActionResult Index()
@@ -38,6 +41,7 @@ public class AtivoController : Controller
       return View();
    }
 
+   // Async tasks<X> representam tarefas assíncronas que retornam tipo X
    [HttpPost]
    public async Task<IActionResult> Criar(AtivoCreateDto ativoDto)
    {
@@ -153,6 +157,6 @@ public class AtivoController : Controller
       {
          TempData["Erro"] = $"Ocorreu um problema durante a deleção do ativo. Detalhes: {erro}";
          return RedirectToAction("Index");
-      }  
+      }
    }
 }
