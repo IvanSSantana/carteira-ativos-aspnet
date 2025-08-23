@@ -45,7 +45,7 @@ namespace CarteiraAtivos.Services
             // Cria o model completo para retorno
             AtivoModel dadosAtivoModel = new()
             {
-                Ticker = ativoDto.Ticker,
+                Ticker = dados!.stocks[0].Ticker!,
                 Cotas = ativoDto.Cotas,
                 ValorTotal = dados!.stocks[0].Cotacao * ativoDto.Cotas,
                 Nome = dados.stocks[0].Nome,

@@ -1,0 +1,6 @@
+@model string
+
+@* A sugestão é exibida como item clicável *@
+<a asp-controller="Ativo" asp-action="Detalhamento" asp-ticker="@Model" class="list-group-item list-group-item-action">
+   @Model
+</a>

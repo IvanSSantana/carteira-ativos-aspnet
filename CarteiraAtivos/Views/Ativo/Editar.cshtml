@@ -29,13 +29,13 @@
 
       <div class="mb-3">
          <label for="Ticker">Ticker</label>
-         <input type="text" class="form-control" asp-for="Ticker">
+         <input type="text" class="form-control" asp-for="Ticker" placeholder="Digite o ticker do ativo...">
          @Html.ValidationMessageFor(x => x.Ticker)
       </div>
 
       <div class="mb-3">
          <label for="Cotas" class="form-label">Cotas</label>
-         <input type="text" class="form-control" asp-for="Cotas">
+         <input type="text" class="form-control" asp-for="Cotas" placeholder="Digite o número de cotas...">
          @Html.ValidationMessageFor(x => x.Cotas)
       </div>
 

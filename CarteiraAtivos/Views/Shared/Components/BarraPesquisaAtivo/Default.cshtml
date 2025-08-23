@@ -1,0 +1,47 @@
+<div class="position-relative w-100">
+    <!-- A barra de pesquisa -->
+    <input type="text" 
+           class="form-control" 
+           id="barraPesquisaAtivo" 
+           placeholder="Digite o ativo..." 
+           oninput="BuscarAtivo(this.value)"/>
+
+    <!-- Container para exibir sugestões -->
+    <div id="sugestao" 
+         class="list-group position-absolute w-100 shadow-sm" 
+         style="z-index: 1000; display: none;"> <!-- Exibe sobre qualquer outro elemento, por enquanto invisível -->
+    </div>
+</div>
+
+<script>
+    // Função chamada sempre que o usuário digita
+    function BuscarAtivo(ativo) {
+        // Se digitar menos de 2 caracteres, não haverá sugestão
+        if (ativo.length < 2) {
+            $('#sugestao').hide().html('');
+            return;
+        }
+
+        // AJAX para o controller
+        $.ajax({
+            type: 'GET',
+            url: `/Ativo/PesquisaAtivo?ticker=${ativo.toUpperCase()}`, // Endpoint do controller para pesquisa
+            success: function (result) {
+                // Insere o ativo retornado da action na div sugestão
+                $('#sugestao').html(result);
+
+                // Guard Clause para ativos não retornados, minimizando uso de elses
+                if (result.length < 1 || result === null) {
+                    $('#sugestao').hide();
+                    return; // Para parar aqui se não houver um ativo retornado
+                } 
+
+                $('#sugestao').show(); // Exibe a sugestão
+            },
+            error: function () {
+                // Em caso de erro, simplesmente esconde a lista
+                $('#sugestao').hide().html('');
+            }
+        });
+    }
+</script>

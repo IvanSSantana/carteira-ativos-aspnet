@@ -16,10 +16,13 @@ namespace CarteiraAtivos.Dtos
 
         [JsonPropertyName("sector")]
         public string? Setor { get; set; } // Energia, Petróleo etc.
+
+        [JsonPropertyName("stock")]
+        public string? Ticker { get; set; }
     }
 
 
-    public class RaizJsonApi // Utilizado para deserializar a resposta da API
+    public class RaizJsonApi // Utilizado para desserializar a resposta da API
     {
         public List<AtivoApiDto> stocks { get; set; }
     }
@@ -32,7 +35,7 @@ namespace CarteiraAtivos.Dtos
 
         [Required(ErrorMessage = "A quantidade de cotas é obrigatória!")]
         [Range(1, 100, ErrorMessage = "O valor de cotas deve ser entre 1 e 100.")]
-        public required int Cotas { get; set; } // Quantas cotas você tem da ação.
+        public required int Cotas { get; set; } // Quantas cotas você comprará da ação.
 
         public int Id { get; set; }
     }
@@ -66,7 +69,7 @@ namespace CarteiraAtivos.Dtos
         public List<PrecoHistoricoDto>? HistoricoPreco { get; set; }
     }
 
-    public class RaizHistoricoJson
+    public class RaizHistoricoJson // Utilizado para desserializar a resposta da API
     {
         public List<AtivoHistoricoDto> results { get; set; }
     }

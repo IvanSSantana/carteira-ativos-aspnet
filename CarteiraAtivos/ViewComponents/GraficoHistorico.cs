@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using CarteiraAtivos.Services; // supondo que você tenha um service
+using CarteiraAtivos.Services;
 using CarteiraAtivos.Dtos;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace CarteiraAtivos.ViewComponents
 {

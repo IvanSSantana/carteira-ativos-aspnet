@@ -1,7 +1,7 @@
 @model AtivoModel
 <div>
-    @if (Model != null && Model.Any())
+    @if (Model != null)
     {
-        @await Component.InvokeAsync("GraficoHistorico", new { ticker = Model.First().Ticker })
+        @await Component.InvokeAsync("GraficoHistorico", new { ticker = Model.Ticker })
     }
 </div>

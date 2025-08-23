@@ -111,7 +111,7 @@ public class AtivoController : Controller
             TempData["Erro"] = "Edição inválida ou acesso negado.";
             return View("Index", ativoDto);
          }
-         
+
          AtivoModel ativoAtualizado = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
          await _ativoRepositorio.EditarAtivo(ativoAtualizado);
@@ -137,6 +137,7 @@ public class AtivoController : Controller
          return RedirectToAction("Index");
       }
 
+      // Modal de confirmação da exclusão
       return PartialView("_ApagarConfirmacao", ativoModel);
    }
 
@@ -163,5 +164,45 @@ public class AtivoController : Controller
          TempData["Erro"] = $"Ocorreu um problema durante a deleção do ativo. Detalhes: {erro}";
          return RedirectToAction("Index");
       }
+   }
+
+   [HttpGet]
+   public async Task<IActionResult> Detalhamento(string ticker)
+   {
+      AtivoCreateDto ativoDto = new()
+      {
+         Ticker = ticker,
+         Cotas = 0 // Provavelmente buscarei do banco posteriormente para exibir relações do usuário com o ativo
+      };
+
+      var ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+
+      if (ativo == null)
+      {
+         TempData["Erro"] = "Ativo não encontrado.";
+         return RedirectToAction("Index");
+      }
+
+      return View(ativo);
+   }
+
+   [HttpGet]
+   public async Task<IActionResult> PesquisaAtivo(string ticker)
+   {
+      AtivoCreateDto ativoDto = new()
+      {
+         Ticker = ticker,
+         Cotas = 0
+      };
+
+      var ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+
+      if (ativo == null)
+      {
+         TempData["Erro"] = "Ativo não encontrado.";
+         return RedirectToAction("Index");
+      }
+
+      return PartialView("_SugestaoPesquisa", ativo.Ticker);
    }
 }
