@@ -29,13 +29,13 @@
          
    <div class="mb-3">
       <label for="Login" class="form-label">Login</label>
-      <input type="text" class="form-control" asp-for="Login">
+      <input type="text" class="form-control" asp-for="Login" placeholder="Digite o login da conta...">
       @Html.ValidationMessageFor(x => x.Login)
    </div>
 
    <div class="mb-3">
       <label for="Senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" asp-for="Senha">
+      <input type="password" class="form-control" asp-for="Senha" placeholder="Digite a senha da conta...">
       @Html.ValidationMessageFor(x => x.Senha)
    </div>
 

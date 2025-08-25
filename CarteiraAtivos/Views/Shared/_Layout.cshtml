@@ -24,12 +24,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Ativo" asp-action="Index">Ativos</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="LoginUsuario" asp-action="SairLogin">Sair</a>
+                        <li>
+                            @await Component.InvokeAsync("BarraPesquisaAtivo", new { redirecionamento = true })
                         </li>
 
-                        <li>
-                            @await Component.InvokeAsync("BarraPesquisaAtivo")
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="LoginUsuario" asp-action="SairLogin">Sair</a>
                         </li>
                     </ul>
                 </div>

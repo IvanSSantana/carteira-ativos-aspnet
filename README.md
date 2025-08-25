@@ -3,8 +3,8 @@ Um projeto que simula uma carteira de ativos feito com ASP.NET Core. Feito para 
 
 ## Passo a passo para rodar a aplicação em sua máquina local:
 0. Crie uma chave de API na [Brapi](https://brapi.dev/).
-1. No arquivo ".env" você deve inserir os valores das váriaveis de ambiente.
+1. No arquivo ".env" em Environment você deve inserir os valores das váriaveis de ambiente.
 
 
 ## Notas:
- - A integração de API, o uso de DTOs e .env foram conhecimentos adquiridos de fontes externas. Então caso não estejam devidamente aplicados, estou aberto a sugestões de melhoria e correções.
+ - A integração de API, o uso de DTOs, ambiente virtual, criação de gráficos e a barra de pesquisa com autocomplete foram conhecimentos adquiridos de fontes externas. Então caso não estejam devidamente aplicados, estou aberto a sugestões de melhoria e correções.

@@ -11,7 +11,7 @@
 
 <script>
    // Serializa em Json novamente para integração correta com JavaScript
-   @* @Html.Raw: força virar HTML puro*@
+   @* @Html.Raw: força o Json do C# virar HTML puro para o JavaScript conseguir interpretar *@
     const dados = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
 
    // Mapeia os dados para o gráfico: mapeamento funciona como um for, mas na programação funcional

@@ -1,7 +1,4 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿// Criação da tabela de ativos
 $(document).ready(function () {
     $('.data-table').DataTable({
     "autoWidth": true, 
@@ -33,6 +30,7 @@ $(document).ready(function () {
 });
 });
 
+// Ao clicar no botão de confirmar deleção aparece o modal de confirmação
 $(document).ready(function () {
     $('.btn-confirmar-deletar').click(function (page) {
         page.preventDefault(); // Impede navegação, permitindo a PartialView

@@ -182,7 +182,7 @@ public class AtivoController : Controller
          TempData["Erro"] = "Ativo não encontrado.";
          return RedirectToAction("Index");
       }
-
+      
       return View(ativo);
    }
 
@@ -199,10 +199,11 @@ public class AtivoController : Controller
 
       if (ativo == null)
       {
-         TempData["Erro"] = "Ativo não encontrado.";
-         return RedirectToAction("Index");
+         return Json(null);
       }
 
-      return PartialView("_SugestaoPesquisa", ativo.Ticker);
+      AtivoApiDto ativoApiDto = _mapper.Map<AtivoApiDto>(ativo);
+
+      return Json(ativoApiDto); // Serializa pra json
    }
 }

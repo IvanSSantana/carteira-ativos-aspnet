@@ -28,7 +28,7 @@
 
       <div class="mb-3">
          <label for="Ticker">Ticker</label>
-         <input type="text" class="form-control" asp-for="Ticker" placeholder="Digite o ticker do ativo...">
+         @await Component.InvokeAsync("BarraPesquisaAtivo", new { redirecionamento = false })
          @Html.ValidationMessageFor(x => x.Ticker)
       </div>
 

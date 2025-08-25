@@ -1,46 +1,70 @@
+@model bool
+
+@{
+    string id_barra = Model ? "redirecionar-pesquisa" : "autocomplete-pesquisa";
+    string id_resposta = Model ? "redirecionar-resposta" : "autocomplete-resposta";
+}
+
 <div class="position-relative w-100">
     <!-- A barra de pesquisa -->
-    <input type="text" 
-           class="form-control" 
-           id="barraPesquisaAtivo" 
-           placeholder="Digite o ativo..." 
-           oninput="BuscarAtivo(this.value)"/>
+    <input type="text" id="@id_barra" class="form-control" name="Ticker" @* Funciona como o asp-for, porém é um atributo padrão do HTML, não do ASP.NET *@
+     placeholder="Digite o ativo..."
+        oninput="BuscarAtivo(this.value, '#@id_resposta', '#@id_barra', (@Model.ToString().ToLower()))" />
 
-    <!-- Container para exibir sugestões -->
-    <div id="sugestao" 
-         class="list-group position-absolute w-100 shadow-sm" 
-         style="z-index: 1000; display: none;"> <!-- Exibe sobre qualquer outro elemento, por enquanto invisível -->
+    <!-- Container para exibir autocomplete -->
+    <div id="@id_resposta" class="sugestao list-group position-absolute w-100 shadow-sm"
+        style="z-index: 1000; display: none;"> <!-- Exibe sobre qualquer outro elemento, por enquanto invisível -->
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
 <script>
     // Função chamada sempre que o usuário digita
-    function BuscarAtivo(ativo) {
+    function BuscarAtivo(ativo, sugestao, barra, redirecionar) {
         // Se digitar menos de 2 caracteres, não haverá sugestão
         if (ativo.length < 2) {
-            $('#sugestao').hide().html('');
+            $(sugestao).hide().html('');
             return;
         }
 
         // AJAX para o controller
         $.ajax({
             type: 'GET',
+            dataType: 'json', // // Convertendo do endpoint para Json
             url: `/Ativo/PesquisaAtivo?ticker=${ativo.toUpperCase()}`, // Endpoint do controller para pesquisa
-            success: function (result) {
-                // Insere o ativo retornado da action na div sugestão
-                $('#sugestao').html(result);
-
+            success: function (data) {
                 // Guard Clause para ativos não retornados, minimizando uso de elses
-                if (result.length < 1 || result === null) {
-                    $('#sugestao').hide();
+                if (data.length < 1 || data === null) {
+                    $(sugestao).hide();
                     return; // Para parar aqui se não houver um ativo retornado
-                } 
+                }
 
-                $('#sugestao').show(); // Exibe a sugestão
+                // Insere o ativo retornado da action num botão na div sugestão
+                $(sugestao).html(`
+                    <button type="button" class="list-group-item list-group-item-action">
+                        ${data.stock}
+                    </button>
+                `).show();
+
+                if (redirecionar == true) {
+                       $(`${sugestao} button`).wrap(`<a style="text-decoration: none;" href="/Ativo/Detalhamento?ticker=${data.stock}"></a>`); //Botão "vira" um link
+                }
+                else {
+                    // Ao clicar na sugestão de pesquisa ele autocompleta o input
+                    $(sugestao).on('click', function () { // .off() remove a trigger no parâmetro
+                        // Coloca o texto do json na barra de pesquisa
+                        $(barra).val(data.stock.trim());
+
+                        // Oculta as sugestões depois de escolher
+                        $(sugestao).hide();
+                    });
+                }
             },
             error: function () {
-                // Em caso de erro, simplesmente esconde a lista
-                $('#sugestao').hide().html('');
+                // Em caso de erro, não haverá sugestão
+                $(sugestao).hide().html('');
             }
         });
     }

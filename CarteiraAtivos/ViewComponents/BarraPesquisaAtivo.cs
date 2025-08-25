@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using CarteiraAtivos.Services;
-using CarteiraAtivos.Dtos;
 
 namespace CarteiraAtivos.ViewComponents
 {
     public class BarraPesquisaAtivoViewComponent : ViewComponent
     {
-        public Task<IViewComponentResult> InvokeAsync()
+        public Task<IViewComponentResult> InvokeAsync(bool redirecionamento)
         {
-            return Task.FromResult<IViewComponentResult>(View());
+            return Task.FromResult<IViewComponentResult>(View(redirecionamento));
         }
     }
 }
