@@ -61,10 +61,15 @@ public class AtivoController : Controller
                return View(ativoDto);
             }
 
-            AtivoModel ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
-            ativoApi.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
+            AtivoApiDto ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
-            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoApi);
+            // Concluindo merge de Dto's para Model
+            AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
+            ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
+            ativoApiModel.ValorTotal = ativoApi.Cotacao * ativoDto.Cotas;
+            ativoApiModel.Cotas = ativoDto.Cotas;
+
+            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoApiModel);
 
             if (ativoEnviado == null) { return View(ativoDto); }
 
@@ -111,10 +116,19 @@ public class AtivoController : Controller
             TempData["Erro"] = "Edição inválida ou acesso negado.";
             return View("Index", ativoDto);
          }
+         
+         // Requisição dos dados pela API 
+         AtivoApiDto ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
-         AtivoModel ativoAtualizado = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+         // Concluindo merge de Dto's para Model
+         AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
+         ativoApiModel.Id = ativoDto.Id;
+         ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
+         ativoApiModel.ValorTotal = ativoApi.Cotacao * ativoDto.Cotas;
+         ativoApiModel.Cotas = ativoDto.Cotas;
+         ativoApiModel.Setor = ativoApi.Setor;
 
-         await _ativoRepositorio.EditarAtivo(ativoAtualizado);
+         await _ativoRepositorio.EditarAtivo(ativoApiModel);
          TempData["Sucesso"] = "Ativo editado com sucesso!";
          return RedirectToAction("Index");
       }
@@ -195,15 +209,13 @@ public class AtivoController : Controller
          Cotas = 0
       };
 
-      var ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+      AtivoApiDto ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
       if (ativo == null)
       {
          return Json(null);
       }
 
-      AtivoApiDto ativoApiDto = _mapper.Map<AtivoApiDto>(ativo);
-
-      return Json(ativoApiDto); // Serializa pra json
+      return Json(ativo); // Serializa pra json
    }
 }

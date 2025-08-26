@@ -19,7 +19,7 @@ namespace CarteiraAtivos.Services
             _sessao = sessao;
         }
 
-        public async Task<AtivoModel> ObterDadosDoAtivo(AtivoCreateDto ativoDto)
+        public async Task<AtivoApiDto> ObterDadosDoAtivo(AtivoCreateDto ativoDto)
         {
             // Configuração do token para iniciar requisições
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");
@@ -43,15 +43,13 @@ namespace CarteiraAtivos.Services
             }
 
             // Cria o model completo para retorno
-            AtivoModel dadosAtivoModel = new()
-            {
+            AtivoApiDto dadosAtivoModel = new()
+            {   
+                Cotacao = dados!.stocks[0].Cotacao!,
                 Ticker = dados!.stocks[0].Ticker!,
-                Cotas = ativoDto.Cotas,
-                ValorTotal = dados!.stocks[0].Cotacao * ativoDto.Cotas,
                 Nome = dados.stocks[0].Nome,
                 Tipo = dados.stocks[0].Tipo,
                 Setor = dados.stocks[0].Setor,
-                LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id
             };
 
             return dadosAtivoModel!;

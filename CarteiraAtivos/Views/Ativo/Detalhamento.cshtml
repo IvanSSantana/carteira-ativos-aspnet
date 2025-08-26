@@ -1,7 +1,13 @@
 @model AtivoModel
 <div>
     @if (Model != null)
-    {
+    {   
+        <main class="container-detalhamento">
+            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Ticker })
+            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Tipo })
+            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Cotas.ToString() })
+        </main>
+        
         @await Component.InvokeAsync("GraficoHistorico", new { ticker = Model.Ticker })
     }
-</div>
+</div>  

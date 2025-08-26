@@ -97,3 +97,21 @@ a {
 a:hover {
     color: #64b5f6;
 }
+
+.card-detalhamento {
+    border: solid 3px green;
+    border-radius: 10px;
+    display: flex;
+    width: 25vw;
+    height: 25vh;
+    font-size: 5em;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 5px;
+  }
+
+.container-detalhamento {
+    display: flex;
+    flex-direction: row;
+    gap: 5%
+}
