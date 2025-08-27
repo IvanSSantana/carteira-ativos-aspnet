@@ -17,7 +17,7 @@
    // Mapeia os dados para o gráfico: mapeamento funciona como um for, mas na programação funcional
 
    // Colunas => convertendo TimeStamp para Date
-    const colunas = dados.map(d => new Date(d.date * 1000).getDate());
+    const colunas = dados.map(d => new Date(d.date * 1000).toLocaleDateString("pt-BR"));
     // Valores
     const valores = dados.map(d => parseFloat((d.close + d.open) / 2).toFixed(2)); // => Preço Médio
 
@@ -30,11 +30,10 @@
             datasets: [{
                 label: 'Preço (R$)',
                 data: valores,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(39, 204, 108, 1)',
+                borderColor: 'rgba(24, 97, 55, 1)',
                 borderWidth: 2,
-                fill: true,
-                tension: 0.8 // Curva suave
+                fill: true
             }]
         },
         options: {
@@ -43,6 +42,11 @@
                 y: {
                     beginAtZero: false
                 }
+            },
+            plugins: {
+                legend: {
+                    onClick: (e) => e.stopPropagation() // Não permite desativar o gráfico
+                }   
             }
         }
     });

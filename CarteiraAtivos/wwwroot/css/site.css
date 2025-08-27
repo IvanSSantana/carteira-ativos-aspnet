@@ -99,7 +99,9 @@ a:hover {
 }
 
 .card-detalhamento {
-    border: solid 3px green;
+    border: solid 3px #9ee49e;
+    background: #aeebc5;
+    background: linear-gradient(90deg,rgba(174, 235, 197, 1) 0%, rgba(39, 204, 108, 1) 50%, rgba(24, 97, 55, 1) 100%);
     border-radius: 10px;
     display: flex;
     width: 25vw;
@@ -108,10 +110,15 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding-bottom: 5px;
+    color:#2d332b
   }
 
 .container-detalhamento {
     display: flex;
     flex-direction: row;
     gap: 5%
+}
+
+.grafico-historico {
+  margin-top: 7%;
 }

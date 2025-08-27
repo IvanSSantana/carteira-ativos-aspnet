@@ -66,7 +66,7 @@ public class AtivoController : Controller
             // Concluindo merge de Dto's para Model
             AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
             ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-            ativoApiModel.ValorTotal = ativoApi.Cotacao * ativoDto.Cotas;
+            ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2); 
             ativoApiModel.Cotas = ativoDto.Cotas;
 
             AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoApiModel);
@@ -124,9 +124,8 @@ public class AtivoController : Controller
          AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
          ativoApiModel.Id = ativoDto.Id;
          ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-         ativoApiModel.ValorTotal = ativoApi.Cotacao * ativoDto.Cotas;
+         ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2); 
          ativoApiModel.Cotas = ativoDto.Cotas;
-         ativoApiModel.Setor = ativoApi.Setor;
 
          await _ativoRepositorio.EditarAtivo(ativoApiModel);
          TempData["Sucesso"] = "Ativo editado com sucesso!";
@@ -189,7 +188,7 @@ public class AtivoController : Controller
          Cotas = 0 // Provavelmente buscarei do banco posteriormente para exibir relações do usuário com o ativo
       };
 
-      var ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+      AtivoApiDto ativo = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
       if (ativo == null)
       {

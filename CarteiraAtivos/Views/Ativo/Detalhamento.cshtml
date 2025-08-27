@@ -1,13 +1,22 @@
-@model AtivoModel
+@using CarteiraAtivos.Dtos
+@model AtivoApiDto
+
+@{
+    ViewData["Title"] = "Detalhamento de Ativo";
+}
+
 <div>
     @if (Model != null)
     {   
         <main class="container-detalhamento">
-            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Ticker })
-            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Tipo })
-            @await Component.InvokeAsync("CardDetalhamento", new { texto = Model.Cotas.ToString() })
+           <div class="card-detalhamento">@Model.Ticker</div>
+           <div class="card-detalhamento">@((Model.Tipo == "stock" || Model.Tipo == "bdr") ? "Ação" : "FII")</div>
+           @* Operação ternária para tradução *@
+           <div class="card-detalhamento">R$@Model.Cotacao.ToString()</div>
         </main>
-        
-        @await Component.InvokeAsync("GraficoHistorico", new { ticker = Model.Ticker })
-    }
+
+        <div class="grafico-historico">
+            @await Component.InvokeAsync("GraficoHistorico", new { ticker = Model.Ticker })
+        </div>
+    }   
 </div>  
