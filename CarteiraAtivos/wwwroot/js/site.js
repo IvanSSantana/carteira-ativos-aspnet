@@ -49,3 +49,46 @@ $(document).ready(function () {
         });
     });
 });
+
+// Função para exibir quanto custará os ativos na tela de cadastro/edição de ativos
+function CotacaoTempoReal(tickerInput, cotasInput, resultContainer) { 
+    $(cotasInput).on('input', function () {
+    let ticker = $(tickerInput).val();
+    let cotas = $(cotasInput).val();
+
+    // Guard Clause para inputs inválidos
+    if (ticker.length < 5 || cotas < 1 ) {
+        $(resultadoContainer).empty(); // Não exibe nada
+            return;
+    }
+
+
+        $.ajax({
+        type: 'GET',
+        dataType: 'json', // // Convertendo do endpoint para Json
+        url: `/Ativo/PesquisaAtivo?ticker=${ticker.toUpperCase()}`, // Endpoint do controller para pesquisa
+        success: function (data) {
+            // Guard Clause para ativos não retornados, minimizando uso de elses
+            if (data.length < 1 || data == null) {
+                $(resultadoContainer).empty(); // Não exibe nada
+                return; // Para parar aqui se não houver um ativo retornado
+            }
+
+            // Insere o preço total no resultContainer
+            $(resultContainer).html(
+                `<h5>O preço total aproximado é: R$ ${(data.close * cotas).toFixed(2)}</h5>`
+            )
+        },
+        error: function (e) {
+            $(resultContainer).html(
+                `<h5>Houve um erro inesperado durante a busca da cotação em tempo real. Detalhes: ${e}</h5>`
+            )
+        }
+    });
+});
+}
+
+$(document).ready(function () {
+    CotacaoTempoReal('#autocomplete-pesquisa', '#cotas', '#valorTotal' );
+});
+

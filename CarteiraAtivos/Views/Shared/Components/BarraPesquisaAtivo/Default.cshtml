@@ -7,9 +7,13 @@
 
 <div class="position-relative w-100">
     <!-- A barra de pesquisa -->
-    <input type="text" id="@id_barra" class="form-control" name="Ticker" @* Funciona como o asp-for, porém é um atributo padrão do HTML, não do ASP.NET *@
-     placeholder="Digite o ativo..."
-        oninput="BuscarAtivo(this.value, '#@id_resposta', '#@id_barra', (@Model.ToString().ToLower()))" />
+    <input type="text"
+           id="@id_barra"
+           class="form-control"
+           name="Ticker" @* Funciona como o asp-for, porém é um atributo padrão do HTML, não do ASP.NET *@
+           value="@ViewBag.Ticker" @* Utilizado somente para edição *@
+           placeholder="Digite o ativo..."
+           oninput="BuscarAtivo(this.value, '#@id_resposta', '#@id_barra', (@Model.ToString().ToLower()))" />
 
     <!-- Container para exibir autocomplete -->
     <div id="@id_resposta" class="sugestao list-group position-absolute w-100 shadow-sm"
@@ -49,7 +53,7 @@
                 `).show();
 
                 if (redirecionar == true) {
-                       $(`${sugestao} button`).wrap(`<a style="text-decoration: none;" href="/Ativo/Detalhamento?ticker=${data.stock}"></a>`); //Botão "vira" um link
+                    $(`${sugestao} button`).wrap(`<a style="text-decoration: none;" href="/Ativo/Detalhamento?ticker=${data.stock}"></a>`); //Botão "vira" um link
                 }
                 else {
                     // Ao clicar na sugestão de pesquisa ele autocompleta o input

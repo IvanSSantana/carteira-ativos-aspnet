@@ -92,9 +92,9 @@ public class AtivoController : Controller
    {
       int usuarioId = _sessao.VerificarSessaoLogin()!.Id;
       AtivoModel ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoId, usuarioId);
-      AtivoCreateDto ativoDtoModel = _mapper.Map<AtivoCreateDto>(ativoDb);
+      AtivoCreateDto ativoDto = _mapper.Map<AtivoCreateDto>(ativoDb);
 
-      return View(ativoDtoModel);
+      return View(ativoDto);
    }
 
    [HttpPost]
@@ -108,14 +108,22 @@ public class AtivoController : Controller
          if (!ModelState.IsValid)
          {
             TempData["Erro"] = "Erro ao buscar ativo no banco. Por favor, tente novamente.";
-            return View("Index", ativoDto);
+            return View(ativoDto);
          }
 
          if (ativoDb == null || ativoDb.LoginUsuarioId != usuarioId)
          {
             TempData["Erro"] = "Edição inválida ou acesso negado.";
-            return View("Index", ativoDto);
+            return View(ativoDto);
          }
+         
+         var ativoRepetido = _ativoRepositorio.BuscarPorTickerEUsuarioId(ativoDto.Ticker, usuarioId);
+         // Ticker não pode ser alterado para um já existente
+         if (ativoRepetido != null && ativoRepetido.Id != ativoDto.Id)
+         {
+            TempData["Erro"] = "Ativo já cadastrado.";
+            return View(ativoDto);
+         }  
          
          // Requisição dos dados pela API 
          AtivoApiDto ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);

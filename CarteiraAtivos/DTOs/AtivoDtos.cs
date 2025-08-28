@@ -29,6 +29,8 @@ namespace CarteiraAtivos.Dtos
 
     public class AtivoCreateDto // Utilizado para o input de cadastro do usuário
     {
+        public int Id { get; set; }
+        
         [Required(ErrorMessage = "O ticker da ação é obrigatório!")]
         [StringLength(6, ErrorMessage = "O ticker deve ter entre 5 e 6 caracteres.", MinimumLength = 5)]
         public required string Ticker { get; set; } // Sigla (ou como na API, símbolo) Exemplo: PETR4
@@ -37,7 +39,6 @@ namespace CarteiraAtivos.Dtos
         [Range(1, 100, ErrorMessage = "O valor de cotas deve ser entre 1 e 100.")]
         public required int Cotas { get; set; } // Quantas cotas você comprará da ação.
 
-        public int Id { get; set; }
     }
 
     public class PrecoHistoricoDto

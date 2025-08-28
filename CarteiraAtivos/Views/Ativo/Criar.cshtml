@@ -34,12 +34,12 @@
 
       <div class="mb-3">
          <label for="Cotas" class="form-label">Cotas</label>
-         <input type="text" class="form-control" asp-for="Cotas" placeholder="Digite o número de cotas...">
+         <input id="cotas" type="text" class="form-control" asp-for="Cotas" placeholder="Digite o número de cotas...">
          @Html.ValidationMessageFor(x => x.Cotas)
       </div>
 
       @* Aqui abaixo virá um component/PartialView com a lógica da cotação *@
-      <div id="valorTotal" class="form-text">O valor total é R$ 111,00</div>
+      <div id="valorTotal" class="form-text"></div>
 
       <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
    </form>
