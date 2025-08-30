@@ -113,6 +113,63 @@ a:hover {
     color:#2d332b
   }
 
+/* Corpo do modal */
+.modal-content {
+  background-color: #1e1e1e; /* fundo escuro */
+  color: #e0e0e0;           /* texto claro */
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+/* Cabeçalho */
+.modal-header {
+  background-color: #2c2c2c;
+  border-bottom: 1px solid #444;
+  color: #fff;
+}
+
+/* Botão fechar no dark */
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.8;
+  transition: 0.2s;
+}
+.modal-header .btn-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Corpo */
+.modal-body {
+  background-color: #1e1e1e;
+  color: #ddd;
+}
+
+/* Rodapé */
+.modal-footer {
+  background-color: #2c2c2c;
+  border-top: 1px solid #444;
+}
+
+/* Botão vermelho (excluir) */
+.modal-footer .btn-danger {
+  background-color: #d9534f;
+  border: none;
+}
+.modal-footer .btn-danger:hover {
+  background-color: #c9302c;
+}
+
+/* Botão cinza (cancelar) */
+.modal-footer .btn-secondary {
+  background-color: #555;
+  border: none;
+}
+.modal-footer .btn-secondary:hover {
+  background-color: #666;
+}
+/* Fim do código IA */
+
 .container-detalhamento {
     display: flex;
     flex-direction: row;
@@ -123,8 +180,6 @@ a:hover {
   margin-top: 7%;
 }
 
-/* Fim do código IA */
-
 .btn-index-ativo {
   width: 49.8%; /* Gambiarra pra deixar os dois grandes lado a lado */
 }
@@ -134,9 +189,26 @@ a:hover {
   color: white;
   border: 1px black solid;
   border-radius: 10px;
+  width: 55%;
+  height: 85%;
 }
 
+/* Altera a tela atrás do modal - chamada de backdrop  */
 #modalEscolhaNegociacaoAtivo::backdrop {
   background: rgba(0, 0, 0, 0.4);   /* Escurece o fundo */
   backdrop-filter: blur(1px);       /* Aplica desfoque */
+}
+
+#btn-modal-close {
+  margin-left: 95%;
+  margin-bottom: 20px;
+}
+
+#btn-modal-close:hover {
+  background-color: rgba(180, 180, 180, 0.301);
+  transition: all 0.3s;
+}
+
+#btn-modal-close:active, #btn-modal-close:focus {
+  box-shadow: 0 0 0 0;
 }

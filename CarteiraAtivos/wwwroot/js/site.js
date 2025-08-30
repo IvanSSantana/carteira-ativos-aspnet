@@ -95,9 +95,16 @@ $(document).ready(function () {
 /* Aparição de Modal de negociação, mas sem JQuery para fins didáticos. */
 let buttonNegociar = document.getElementById('ativaModalNegociar');
 let modalNegociar = document.getElementById('modalEscolhaNegociacaoAtivo');
+let buttonFechaNegociar = document.getElementById('btn-modal-close');
 
 buttonNegociar.addEventListener("click", () => {
     if (!modalNegociar.open) {
-    modalNegociar.showModal();
+        modalNegociar.showModal();
+    }
+});
+
+buttonFechaNegociar.addEventListener("click", () => {
+    if (modalNegociar.open) {
+        modalNegociar.close();
     }
 });
