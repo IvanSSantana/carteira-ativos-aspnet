@@ -66,10 +66,10 @@ public class AtivoController : Controller
             // Concluindo merge de Dto's para Model
             AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
             ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-            ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2); 
+            ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2);
             ativoApiModel.Cotas = ativoDto.Cotas;
 
-            AtivoModel ativoEnviado = await _ativoRepositorio.CadastrarAtivo(ativoApiModel);
+            AtivoModel ativoEnviado = _ativoRepositorio.CadastrarAtivo(ativoApiModel);
 
             if (ativoEnviado == null) { return View(ativoDto); }
 
@@ -116,15 +116,15 @@ public class AtivoController : Controller
             TempData["Erro"] = "Edição inválida ou acesso negado.";
             return View(ativoDto);
          }
-         
+
          var ativoRepetido = _ativoRepositorio.BuscarPorTickerEUsuarioId(ativoDto.Ticker, usuarioId);
          // Ticker não pode ser alterado para um já existente
          if (ativoRepetido != null && ativoRepetido.Id != ativoDto.Id)
          {
             TempData["Erro"] = "Ativo já cadastrado.";
             return View(ativoDto);
-         }  
-         
+         }
+
          // Requisição dos dados pela API 
          AtivoApiDto ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
 
@@ -132,10 +132,10 @@ public class AtivoController : Controller
          AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
          ativoApiModel.Id = ativoDto.Id;
          ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-         ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2); 
+         ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2);
          ativoApiModel.Cotas = ativoDto.Cotas;
 
-         await _ativoRepositorio.EditarAtivo(ativoApiModel);
+         _ativoRepositorio.EditarAtivo(ativoApiModel);
          TempData["Sucesso"] = "Ativo editado com sucesso!";
          return RedirectToAction("Index");
       }
@@ -203,7 +203,7 @@ public class AtivoController : Controller
          TempData["Erro"] = "Ativo não encontrado.";
          return RedirectToAction("Index");
       }
-      
+
       return View(ativo);
    }
 
@@ -224,5 +224,67 @@ public class AtivoController : Controller
       }
 
       return Json(ativo); // Serializa pra json
+   }
+
+   [HttpGet]
+   public IActionResult NegociarAtivo(int ativoId)
+   {
+      AtivoModel ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativoId, _sessao.VerificarSessaoLogin()!.Id);
+
+      if (ativoDb == null)
+      {
+         TempData["Erro"] = "Houve um erro durante a busca do ativo";
+         return RedirectToAction("Index");
+      }
+      
+      AtivoNegociarDto ativoDto = new()
+      {
+         Id = ativoDb.Id,
+         Cotas = null,
+         Comprar = null
+      };
+
+      return View(ativoDto);
+   }
+
+   // Faz compra ou venda de determinado ativo
+   [HttpPost]
+   public async Task<IActionResult> NegociarAtivo(AtivoNegociarDto ativo)
+   {
+      LoginUsuarioModel sessao = _sessao.VerificarSessaoLogin()!;
+      AtivoModel? ativoDb = _ativoRepositorio.BuscarPorIdEUsuarioId(ativo.Id, sessao.Id);
+
+      if (ativoDb == null)
+      {
+         TempData["Erro"] = "Houve um erro durante a busca do ativo";
+         return RedirectToAction("Index");
+      }
+
+      // Somente para melhor legibilidade, mas é somente utilizado para busca na API
+      AtivoCreateDto ativoDto = _mapper.Map<AtivoCreateDto>(ativoDb);
+      var ativoApi = await _serviceApi.ObterDadosDoAtivo(ativoDto);
+
+      if (ativo.Comprar == true)
+      {
+         ativoDb.Cotas += (int)ativo.Cotas!;
+         ativoDb.ValorTotal += (float)Math.Round((decimal)(ativo.Cotas! * ativoApi.Cotacao!), 2);
+         ativoDb.Ticker = ativoDb.Ticker;
+         _ativoRepositorio.EditarAtivo(ativoDb);
+      }
+      else if (ativo.Comprar == false)
+      {
+         ativoDb.Cotas -= (int)ativo.Cotas!;
+         ativoDb.ValorTotal -= (float)Math.Round((decimal)(ativo.Cotas! * ativoApi.Cotacao!), 2);
+         ativoDb.Ticker = ativoDb.Ticker;
+         _ativoRepositorio.EditarAtivo(ativoDb);
+      }
+      else
+      {
+         TempData["Erro"] = "Houve um erro durante a negociação do ativo";
+         return View(ativo);
+      }
+
+      TempData["Sucesso"] = "A negociação de cotas do ativo teve sucesso!";
+      return RedirectToAction("Index");
    }
 }

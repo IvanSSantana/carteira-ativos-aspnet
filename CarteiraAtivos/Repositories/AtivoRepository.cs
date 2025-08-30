@@ -33,15 +33,15 @@ namespace CarteiraAtivos.Repositories
             return _DbContext.Ativos.FirstOrDefault(x => x.Id == ativoId && x.LoginUsuarioId == usuarioId);
         }
 
-        public async Task<AtivoModel> CadastrarAtivo(AtivoModel ativo)
+        public AtivoModel CadastrarAtivo(AtivoModel ativo)
         {
             _DbContext.Ativos.Add(ativo);
-            await _DbContext.SaveChangesAsync();
+            _DbContext.SaveChanges();
 
             return ativo;
         }
 
-        public async Task<AtivoModel> EditarAtivo(AtivoModel ativo)
+        public AtivoModel EditarAtivo(AtivoModel ativo)
         {
             AtivoModel ativoDB = BuscarPorIdEUsuarioId(ativo.Id, _sessao.VerificarSessaoLogin()!.Id);
 

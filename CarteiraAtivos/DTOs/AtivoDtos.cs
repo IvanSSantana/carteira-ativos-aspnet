@@ -30,7 +30,7 @@ namespace CarteiraAtivos.Dtos
     public class AtivoCreateDto // Utilizado para o input de cadastro do usuário
     {
         public int Id { get; set; }
-        
+
         [Required(ErrorMessage = "O ticker da ação é obrigatório!")]
         [StringLength(6, ErrorMessage = "O ticker deve ter entre 5 e 6 caracteres.", MinimumLength = 5)]
         public required string Ticker { get; set; } // Sigla (ou como na API, símbolo) Exemplo: PETR4
@@ -73,5 +73,17 @@ namespace CarteiraAtivos.Dtos
     public class RaizHistoricoJson // Utilizado para desserializar a resposta da API
     {
         public List<AtivoHistoricoDto> results { get; set; }
+    }
+
+    public class AtivoNegociarDto
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "A quantidade de cotas é obrigatória!")]
+        [Range(1, 100, ErrorMessage = "O valor de cotas deve ser entre 1 e 100.")]
+        public int? Cotas { get; set; }
+
+        [Required(ErrorMessage = "A ação da negociação é obrigatória!")]
+        public bool? Comprar { get; set; }
     }
 }

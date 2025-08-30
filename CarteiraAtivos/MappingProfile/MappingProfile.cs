@@ -7,10 +7,15 @@ public class MappingProfile : Profile
    public MappingProfile()
    {
       CreateMap<AtivoApiDto, AtivoModel>()
-         .ReverseMap();
+         .ReverseMap(); // Permite via dupla de conversão
+
       CreateMap<LoginUsuarioIndexDto, LoginUsuarioModel>();
+
       CreateMap<LoginUsuarioCreateDto, LoginUsuarioModel>();
+
       CreateMap<AtivoCreateDto, AtivoModel>()
          .ReverseMap();
+
+      CreateMap<AtivoNegociarDto, AtivoCreateDto>();
    }
 }

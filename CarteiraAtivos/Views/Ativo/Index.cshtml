@@ -69,4 +69,40 @@
   </div>
 </div>
 
-<a class="btn btn-primary btn-block w-100" role="button" asp-controller="Ativo" asp-action="Criar">Adicionar novo ativo</a>
+@* Foi feito propositalmente sem JQuery, somente com JavaScript para fins didáticos.
+Sei que isso é uma má prática. Mas devido as circunstâncias e objetivos não vi problema.*@
+<dialog id="modalEscolhaNegociacaoAtivo">
+  <table class="table data-table display">
+      <thead>
+      <tr>
+         <th scope="col">#</th>
+         <th scope="col">Ticker</th>
+         <th scope="col">Cotas</th>
+         <th scope="col">Valor Total</th>
+         <th scope="col"></th>
+      </tr>
+   </thead>
+   <tbody>
+    @if(Model != null && Model.Any())
+    {
+        foreach (AtivoModel ativo in Model)
+        {
+          <tr>
+            <th scope="row">@ativo.Id</th>
+            <td>@ativo.Ticker</td>
+            <td>@ativo.Cotas</td>
+            <td>R$ @ativo.ValorTotal</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a type="button" class="btn btn-primary" asp-route-ativoId="@ativo.Id" asp-controller="Ativo" asp-action="NegociarAtivo">Negociar</a>
+              </div>
+            </td>
+          </tr>
+      }
+    }
+   </tbody>
+   </table>
+</dialog>
+
+<a class="btn-index-ativo btn btn-primary btn-block" role="button" asp-controller="Ativo" asp-action="Criar">Adicionar novo ativo</a>
+<button id="ativaModalNegociar" class="btn-index-ativo btn btn-primary btn-block" role="button">Negociar ativo</button>

@@ -58,12 +58,12 @@ h2, h3, h4, h5, h6, p, label {
   color: white;
 }
 
-/* Força o modo escuro */
 body {
     background-color: #121212;   /* Fundo principal escuro */
     color: #e0e0e0;              /* Texto claro */
 }
 
+/* Força o modo escuro - Solução IA*/
 /* Navbar escura */
 .navbar {
     background-color: #1f1f1f !important;
@@ -121,4 +121,22 @@ a:hover {
 
 .grafico-historico {
   margin-top: 7%;
+}
+
+/* Fim do código IA */
+
+.btn-index-ativo {
+  width: 49.8%; /* Gambiarra pra deixar os dois grandes lado a lado */
+}
+
+#modalEscolhaNegociacaoAtivo {
+  background-color: #1e1e1e;
+  color: white;
+  border: 1px black solid;
+  border-radius: 10px;
+}
+
+#modalEscolhaNegociacaoAtivo::backdrop {
+  background: rgba(0, 0, 0, 0.4);   /* Escurece o fundo */
+  backdrop-filter: blur(1px);       /* Aplica desfoque */
 }

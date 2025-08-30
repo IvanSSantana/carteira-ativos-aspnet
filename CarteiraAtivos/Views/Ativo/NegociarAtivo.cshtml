@@ -1,5 +1,5 @@
 @using CarteiraAtivos.Dtos
-@model AtivoCreateDto
+@model AtivoNegociarDto
 
 @{
    ViewData["Title"] = "Cadastro de Ativo";
@@ -24,12 +24,17 @@
 <main>
    <h2>@ViewData["Title"]</h2>
    
-   <form asp-controller="Ativo" asp-action="Criar" method="post">
+   <form asp-controller="Ativo" asp-action="NegociarAtivo" method="post">
+      <input type="hidden" asp-for="Id" />
 
       <div class="mb-3">
-         <label for="Ticker">Ticker</label>
-         @await Component.InvokeAsync("BarraPesquisaAtivo", new { redirecionamento = false })
-         @Html.ValidationMessageFor(x => x.Ticker)
+         <label for="Cotas">Ação da negociação</label>
+         <select asp-for="Comprar" class="form-control">
+            <option value="">Selecione a negociação...</option>
+            <option value="true">Compra</option>
+            <option value="false">Venda</option>
+         </select>
+         @Html.ValidationMessageFor(x => x.Comprar)
       </div>
 
       <div class="mb-3">

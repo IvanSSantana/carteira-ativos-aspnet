@@ -92,3 +92,12 @@ $(document).ready(function () {
     CotacaoTempoReal('#autocomplete-pesquisa', '#cotas', '#valorTotal' );
 });
 
+/* Aparição de Modal de negociação, mas sem JQuery para fins didáticos. */
+let buttonNegociar = document.getElementById('ativaModalNegociar');
+let modalNegociar = document.getElementById('modalEscolhaNegociacaoAtivo');
+
+buttonNegociar.addEventListener("click", () => {
+    if (!modalNegociar.open) {
+    modalNegociar.showModal();
+    }
+});
