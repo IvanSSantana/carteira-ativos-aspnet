@@ -26,17 +26,17 @@
    <h2>@ViewData["Title"]</h2>
    
    <form asp-controller="LoginUsuario" asp-action="RedefinirSenha" method="post">
-    <input type="hidden" asp-for="Codigo" />
+    <input type="hidden" asp-for="Token" />
 
    <div class="mb-3">
       <label for="Senha" class="form-label">Senha</label>
-      <input type="password" class="form-control" asp-for="Senha">
+      <input placeholder="Digite sua nova senha..." type="password" class="form-control" asp-for="Senha">
       @Html.ValidationMessageFor(x => x.Senha)
    </div>
 
    <div class="mb-3">
       <label for="ConfirmarSenha" class="form-label">Confirmar Senha</label>
-      <input type="password" class="form-control" asp-for="ConfirmarSenha">
+      <input placeholder="Confirme sua nova senha..." type="password" class="form-control" asp-for="ConfirmarSenha">
       @Html.ValidationMessageFor(x => x.ConfirmarSenha)
    </div>
 

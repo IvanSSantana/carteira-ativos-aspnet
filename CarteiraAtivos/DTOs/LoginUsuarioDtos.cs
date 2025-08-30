@@ -48,7 +48,7 @@ public class LoginUsuarioCreateDto // Utilizada para cadastro
 
 public class LoginUsuarioUpdateDto // Utilizado redefinição de senha
 {
-    public required string Codigo { get; set; }
+    public required string Token { get; set; }
     
    [Required(ErrorMessage = "A senha é obrigatória.")]
    [StringLength(100, ErrorMessage = "A senha deve ter, no mínimo, 6 caracteres.", MinimumLength = 6)]

@@ -25,11 +25,11 @@
 <main>
    <h2>@ViewData["Title"]</h2>
    
-   <form asp-controller="LoginUsuario" asp-action="EnviarCodigoRedefinirSenha" method="post">
+   <form asp-controller="LoginUsuario" asp-action="EnviarTokenRedefinirSenha" method="post">
          
    <div class="mb-3">
       <label for="Email" class="form-label">Email</label>
-      <input type="text" class="form-control" asp-for="Email">
+      <input placeholder="Digite o e-mail de sua conta..." type="text" class="form-control" asp-for="Email">
       @Html.ValidationMessageFor(x => x.Email)
    </div>
 

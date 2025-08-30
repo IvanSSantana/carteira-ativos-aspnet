@@ -1,5 +1,5 @@
 @using CarteiraAtivos.Dtos
-@model LoginUsuarioCreateDto
+@model LoginUsuarioIndexDto
 
 @{
    Layout = "_LayoutLogin";
@@ -22,7 +22,7 @@
     </div>
   }
 
-<main>
+<main id="loginContainer">
    <h2>@ViewData["Title"]</h2>
    
    <form asp-controller="LoginUsuario" asp-action="Login" method="post">

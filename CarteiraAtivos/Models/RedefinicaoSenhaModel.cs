@@ -10,7 +10,7 @@ public class RedefinicaoSenhaModel
 {
     public int Id { get; set; }
     public required string Email { get; set; }
-    public required string Codigo { get; set; }
+    public required string Token { get; set; }
     public DateTime ExpiraEm { get; set; }
     public bool Utilizado { get; set; } = false; // Valor padrão
 }

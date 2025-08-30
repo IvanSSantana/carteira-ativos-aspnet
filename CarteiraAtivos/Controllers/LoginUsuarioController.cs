@@ -43,7 +43,7 @@ public class LoginUsuarioController : Controller
     }
 
     [HttpPost]
-    public IActionResult EnviarCodigoRedefinirSenha(LoginUsuarioEmailDto usuario)
+    public IActionResult EnviarTokenRedefinirSenha(LoginUsuarioEmailDto usuario)
     {   
         if (!ModelState.IsValid)
         {
@@ -57,11 +57,11 @@ public class LoginUsuarioController : Controller
             return RedirectToAction("EmailRedefinirSenha");
         }
 
-        var codigo = Guid.NewGuid().ToString().Substring(0, 8);
-        _redefinicaoSenhaRepo.Criar(usuario.Email, codigo);
+        string token = Guid.NewGuid().ToString().Substring(0, 8).GerarHash();
+        _redefinicaoSenhaRepo.Criar(usuario.Email, token);
 
         // Gera o link para a view RedefinirSenha
-        string link = Url.Action("RedefinirSenha", "LoginUsuario", new { codigo }, Request.Scheme)!;
+        string link = Url.Action("RedefinirSenha", "LoginUsuario", new { token }, Request.Scheme)!;
         _email.Enviar(usuario.Email, "Link para redefinição de senha", $"Clique aqui para redefinir sua senha: {link}");
 
         TempData["Sucesso"] = "Enviamos instruções para redefinir a senha no seu e-mail.";
@@ -69,13 +69,13 @@ public class LoginUsuarioController : Controller
     }
 
     [HttpGet]
-    public IActionResult RedefinirSenha(string Codigo)
+    public IActionResult RedefinirSenha(string token)
     {
-        if (Codigo == null || _redefinicaoSenhaRepo.BuscarPorCodigo(Codigo) == null) return RedirectToAction("Index");
+        if (token == null || _redefinicaoSenhaRepo.BuscarPorToken(token) == null) return RedirectToAction("Index");
 
         LoginUsuarioUpdateDto usuarioDto = new()
         {
-            Codigo = Codigo
+            Token = token
         };
 
         return View(usuarioDto);
@@ -89,12 +89,17 @@ public class LoginUsuarioController : Controller
             return View(usuarioDto);
         }
 
-        RedefinicaoSenhaModel redefinirDB = _redefinicaoSenhaRepo.BuscarPorCodigo(usuarioDto.Codigo);
+        RedefinicaoSenhaModel redefinirDB = _redefinicaoSenhaRepo.BuscarPorToken(usuarioDto.Token);
         LoginUsuarioModel usuarioDB = _usuarioRepositorio.BuscarPorEmail(redefinirDB.Email);
 
-        if (usuarioDto.Codigo != redefinirDB.Codigo || redefinirDB == null || usuarioDB == null)
+        if (usuarioDto.Token != redefinirDB.Token || redefinirDB == null || usuarioDB == null)
         {
-            TempData["Erro"] = "Código inválido, expirado ou usuário não encontrado.";
+            TempData["Erro"] = "Token inválido, expirado ou usuário não encontrado.";
+            return View(usuarioDto);
+        }
+        if (usuarioDB.Senha == usuarioDto.Senha!.GerarHash())
+        {
+            TempData["Erro"] = "A nova senha deve ser diferente da senha atual.";
             return View(usuarioDto);
         }
 

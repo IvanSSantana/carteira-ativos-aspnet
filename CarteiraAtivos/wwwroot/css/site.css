@@ -212,3 +212,17 @@ a:hover {
 #btn-modal-close:active, #btn-modal-close:focus {
   box-shadow: 0 0 0 0;
 }
+
+#loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+  margin: 3%;
+}
+
+#loginContainer form {
+  width: 100%;
+}
