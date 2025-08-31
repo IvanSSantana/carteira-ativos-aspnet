@@ -1,5 +1,7 @@
 html {
   font-size: 14px;
+  position: relative;
+  min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -12,14 +14,8 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
   margin-bottom: 60px;
-  background-color: #2c2c2c;
 }
 
 /* Solução simples para corrigir Layout */
@@ -31,6 +27,8 @@ footer {
 }
 
 footer .container {
+  background-color: #202020;
+  color: white;
   display: flex;
   align-items: center;
   height: 100%;
@@ -54,52 +52,7 @@ header .container-fluid {
   color: #e23838
 }
 
-h2, h3, h4, h5, h6, p, label {
-  color: white;
-}
-
-body {
-    background-color: #121212;   /* Fundo principal escuro */
-    color: #e0e0e0;              /* Texto claro */
-}
-
-/* Força o modo escuro - Solução IA*/
-/* Navbar escura */
-.navbar {
-    background-color: #1f1f1f !important;
-}
-
-.navbar .nav-link, .navbar .navbar-brand {
-    color: #e0e0e0 !important;
-}
-
-.navbar .nav-link:hover {
-    color: #ffffff !important;
-}
-
-/* Cards, containers e tabelas */
-.container, .card, .table, .footer {
-    background-color: #1e1e1e !important;
-    color: #e0e0e0 !important;
-    border-radius: 10px !important;
-}
-
-/* Bordas mais discretas no dark */
-.border-bottom, .border-top {
-    border-color: #333 !important;
-}
-
-/* Links */
-a {
-    color: #90caf9;
-}
-
-a:hover {
-    color: #64b5f6;
-}
-
 .card-detalhamento {
-    border: solid 3px #9ee49e;
     background: #aeebc5;
     background: linear-gradient(90deg,rgba(174, 235, 197, 1) 0%, rgba(39, 204, 108, 1) 50%, rgba(24, 97, 55, 1) 100%);
     border-radius: 10px;
@@ -110,74 +63,24 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding-bottom: 5px;
-    color:#2d332b
+    color:#2d332b;
+    box-shadow: rgba(21, 161, 79, 0.4) 0px 5px, rgba(16, 78, 42, 0.3) 0px 10px, rgba(26, 122, 66, 0.2) 0px 15px, rgba(18, 61, 36, 0.1) 0px 20px, rgba(24, 97, 55, 0.05) 0px 25px;
   }
 
-/* Corpo do modal */
-.modal-content {
-  background-color: #1e1e1e; /* fundo escuro */
-  color: #e0e0e0;           /* texto claro */
-  border: 1px solid #333;
-  border-radius: 8px;
-}
-
-/* Cabeçalho */
-.modal-header {
-  background-color: #2c2c2c;
-  border-bottom: 1px solid #444;
-  color: #fff;
-}
-
-/* Botão fechar no dark */
-.modal-header .btn-close {
-  filter: invert(1) grayscale(100%) brightness(200%);
-  opacity: 0.8;
-  transition: 0.2s;
-}
-.modal-header .btn-close:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
-
-/* Corpo */
-.modal-body {
-  background-color: #1e1e1e;
-  color: #ddd;
-}
-
-/* Rodapé */
-.modal-footer {
-  background-color: #2c2c2c;
-  border-top: 1px solid #444;
-}
-
-/* Botão vermelho (excluir) */
-.modal-footer .btn-danger {
-  background-color: #d9534f;
-  border: none;
-}
-.modal-footer .btn-danger:hover {
-  background-color: #c9302c;
-}
-
-/* Botão cinza (cancelar) */
-.modal-footer .btn-secondary {
-  background-color: #555;
-  border: none;
-}
-.modal-footer .btn-secondary:hover {
-  background-color: #666;
-}
-/* Fim do código IA */
-
 .container-detalhamento {
+    background-color: #202020;
+    color: white;
     display: flex;
     flex-direction: row;
-    gap: 5%
+    gap: 5%;
 }
 
 .grafico-historico {
   margin-top: 7%;
+  background-color: #242c26b4;
+  border-radius: 10px;
+  padding: 5%;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .btn-index-ativo {
@@ -185,7 +88,7 @@ a:hover {
 }
 
 #modalEscolhaNegociacaoAtivo {
-  background-color: #1e1e1e;
+  background-color: #202020;
   color: white;
   border: 1px black solid;
   border-radius: 10px;
@@ -224,5 +127,19 @@ a:hover {
 }
 
 #loginContainer form {
-  width: 100%;
+  width: 40dvw;
+  height: 60dvh;
+  border-radius: 10px;
+  background-color: #111111;
+  padding: 5%;
+
+}
+
+body {
+  background-color: #202020;
+  color: white;
+}
+
+.table {
+  color: white;
 }
