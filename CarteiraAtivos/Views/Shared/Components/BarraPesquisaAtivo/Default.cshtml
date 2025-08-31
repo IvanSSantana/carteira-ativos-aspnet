@@ -13,6 +13,8 @@
            name="Ticker" @* Funciona como o asp-for, porém é um atributo padrão do HTML, não do ASP.NET *@
            value="@ViewBag.Ticker" @* Utilizado somente para edição *@
            placeholder="Digite o ativo..."
+           minlength="5"
+           maxlength="6"
            oninput="BuscarAtivo(this.value, '#@id_resposta', '#@id_barra', (@Model.ToString().ToLower()))" />
 
     <!-- Container para exibir autocomplete -->

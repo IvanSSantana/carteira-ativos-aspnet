@@ -274,7 +274,7 @@ public class AtivoController : Controller
       else if (ativo.Comprar == false)
       {
          ativoDb.Cotas -= (int)ativo.Cotas!;
-         ativoDb.ValorTotal -= (float)Math.Round((decimal)(ativo.Cotas! * ativoApi.Cotacao!), 2);
+         ativoDb.ValorTotal -= (float)Math.Round((decimal)(ativo.Cotas! * (ativoDb.ValorTotal / ativoDb.Cotas)!), 2);
          ativoDb.Ticker = ativoDb.Ticker;
          _ativoRepositorio.EditarAtivo(ativoDb);
       }

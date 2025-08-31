@@ -62,14 +62,13 @@ function CotacaoTempoReal(tickerInput, cotasInput, resultContainer) {
             return;
     }
 
-
         $.ajax({
         type: 'GET',
         dataType: 'json', // // Convertendo do endpoint para Json
         url: `/Ativo/PesquisaAtivo?ticker=${ticker.toUpperCase()}`, // Endpoint do controller para pesquisa
         success: function (data) {
             // Guard Clause para ativos não retornados, minimizando uso de elses
-            if (data.length < 1 || data == null) {
+            if (data.length < 1 || data == null || data.stock.toUpperCase() != ticker.toUpperCase()) {
                 $(resultadoContainer).empty(); // Não exibe nada
                 return; // Para parar aqui se não houver um ativo retornado
             }
@@ -81,7 +80,7 @@ function CotacaoTempoReal(tickerInput, cotasInput, resultContainer) {
         },
         error: function (e) {
             $(resultContainer).html(
-                `<h5>Houve um erro inesperado durante a busca da cotação em tempo real. Detalhes: ${e}</h5>`
+                `<h5>Houve um erro inesperado durante a busca da cotação em tempo real.</h5>`
             )
         }
     });
