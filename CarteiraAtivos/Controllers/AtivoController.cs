@@ -66,7 +66,7 @@ public class AtivoController : Controller
             // Concluindo merge de Dto's para Model
             AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
             ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-            ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2);
+            ativoApiModel.ValorTotal = Math.Round(ativoApi.Cotacao! * ativoDto.Cotas, 2);
             ativoApiModel.Cotas = ativoDto.Cotas;
 
             AtivoModel ativoEnviado = _ativoRepositorio.CadastrarAtivo(ativoApiModel);
@@ -132,7 +132,7 @@ public class AtivoController : Controller
          AtivoModel ativoApiModel = _mapper.Map<AtivoModel>(ativoApi);
          ativoApiModel.Id = ativoDto.Id;
          ativoApiModel.LoginUsuarioId = _sessao.VerificarSessaoLogin()!.Id;
-         ativoApiModel.ValorTotal = (float)Math.Round((decimal)ativoApi.Cotacao! * ativoDto.Cotas, 2);
+         ativoApiModel.ValorTotal = Math.Round(ativoApi.Cotacao! * ativoDto.Cotas, 2);
          ativoApiModel.Cotas = ativoDto.Cotas;
 
          _ativoRepositorio.EditarAtivo(ativoApiModel);
@@ -267,14 +267,22 @@ public class AtivoController : Controller
       if (ativo.Comprar == true)
       {
          ativoDb.Cotas += (int)ativo.Cotas!;
-         ativoDb.ValorTotal += (float)Math.Round((decimal)(ativo.Cotas! * ativoApi.Cotacao!), 2);
+         ativoDb.ValorTotal += Math.Round((decimal)ativo.Cotas! * ativoApi.Cotacao!, 2);
          ativoDb.Ticker = ativoDb.Ticker;
          _ativoRepositorio.EditarAtivo(ativoDb);
       }
       else if (ativo.Comprar == false)
       {
+         ativoDb.ValorTotal -= Math.Round((decimal)(ativo.Cotas! * (ativoDb.ValorTotal / ativoDb.Cotas)!), 2);
+
+         if (ativo.Cotas == ativoDb.Cotas)
+         {
+            _ativoRepositorio.DeletarAtivo(ativo.Id);
+            TempData["Sucesso"] = "Ativo completamente vendido com sucesso!";
+            return RedirectToAction("Index");
+         }
+
          ativoDb.Cotas -= (int)ativo.Cotas!;
-         ativoDb.ValorTotal -= (float)Math.Round((decimal)(ativo.Cotas! * (ativoDb.ValorTotal / ativoDb.Cotas)!), 2);
          ativoDb.Ticker = ativoDb.Ticker;
          _ativoRepositorio.EditarAtivo(ativoDb);
       }
@@ -284,7 +292,7 @@ public class AtivoController : Controller
          return View(ativo);
       }
 
-      TempData["Sucesso"] = "A negociação de cotas do ativo teve sucesso!";
+      TempData["Sucesso"] = $"A {((bool)ativo.Comprar ? "compra" : "venda")} de {ativo.Cotas} cota(s) do(a) {ativoApi.Nome} teve sucesso!";
       return RedirectToAction("Index");
    }
 }

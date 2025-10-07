@@ -143,3 +143,7 @@ body {
 .table {
   color: white;
 }
+
+#modalDeletarAtivo .modal-dialog .modal-content {
+  background-color: #202020;
+} 

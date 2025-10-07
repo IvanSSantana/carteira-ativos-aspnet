@@ -16,7 +16,7 @@ namespace CarteiraAtivos.Models
       public required int Cotas { get; set; } // Quantas cotas você tem da ação.
 
       // Os valores abaixo não serão inseridos pelo usuário, mas resgatados pela API   
-      public float? ValorTotal { get; set; } // Valor total em R$ do usuário
+      public decimal ValorTotal { get; set; } // Valor total em R$ do usuário
 
       public string? Nome { get; set; } // Nome completo da empresa
 

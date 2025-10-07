@@ -19,7 +19,7 @@ namespace CarteiraAtivos.Services
             _sessao = sessao;
         }
 
-        public async Task<AtivoApiDto> ObterDadosDoAtivo(AtivoCreateDto ativoDto)
+        public async Task<AtivoApiDto>  ObterDadosDoAtivo(AtivoCreateDto ativoDto)
         {
             // Configuração do token para iniciar requisições
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {Env.GetString("API_KEY")}");

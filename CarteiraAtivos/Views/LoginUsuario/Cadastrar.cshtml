@@ -21,25 +21,25 @@
 
       <div class="mb-3">
          <label for="Nome">Nome</label>
-         <input type="text" class="form-control" asp-for="Nome">
+         <input type="text" class="form-control" asp-for="Nome" placeholder="Digite seu nome...">
          @Html.ValidationMessageFor(x => x.Nome)
       </div>
 
       <div class="mb-3">
          <label for="Login" class="form-label">Login</label>
-         <input type="text" class="form-control" asp-for="Login">
+         <input type="text" class="form-control" asp-for="Login" placeholder="Digite seu login...">
          @Html.ValidationMessageFor(x => x.Login)
       </div>
 
       <div class="mb-3">
          <label for="Email" class="form-label">E-mail</label>
-         <input type="email" class="form-control" asp-for="Email">
+         <input type="email" class="form-control" asp-for="Email" placeholder="Digite seu e-mail...">
          @Html.ValidationMessageFor(x => x.Email)
       </div>
 
       <div class="mb-3">
          <label for="Senha" class="form-label">Senha</label>
-         <input type="password" class="form-control" asp-for="Senha">
+         <input type="password" class="form-control" asp-for="Senha" placeholder="Digite sua senha...">
          @Html.ValidationMessageFor(x => x.Senha)
       </div>
 

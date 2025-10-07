@@ -62,7 +62,13 @@ public class LoginUsuarioController : Controller
 
         // Gera o link para a view RedefinirSenha
         string link = Url.Action("RedefinirSenha", "LoginUsuario", new { token }, Request.Scheme)!;
-        _email.Enviar(usuario.Email, "Link para redefinição de senha", $"Clique aqui para redefinir sua senha: {link}");
+        bool emailEnviado =  _email.Enviar(usuario.Email, "Link para redefinição de senha", $"Clique aqui para redefinir sua senha: {link}");
+
+        if (!emailEnviado)
+        {
+            TempData["Erro"] = $"Houve um erro durante o envio de e-mail.";
+            return RedirectToAction("Index");
+        }
 
         TempData["Sucesso"] = "Enviamos instruções para redefinir a senha no seu e-mail.";
         return RedirectToAction("Index");

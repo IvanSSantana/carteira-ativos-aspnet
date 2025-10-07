@@ -6,7 +6,7 @@ namespace CarteiraAtivos.Dtos
     public class AtivoApiDto // Utilizado para requisições da API
     {
         [JsonPropertyName("close")]
-        public float? Cotacao { get; set; } // Cotação atual
+        public decimal Cotacao { get; set; } // Cotação atual
 
         [JsonPropertyName("name")]
         public string? Nome { get; set; } // Nome da empresa
